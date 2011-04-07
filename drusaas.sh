@@ -19,6 +19,7 @@ RESET=$(tput sgr0)
 
 function update_bashrc {
 cat <<- _EOF_
+
 # PEARANCE ADDENDUM(S)
 
 # enable bash completion in interactive shells
@@ -77,6 +78,7 @@ _EOF_
 
 function update_bash_aliases {
 cat <<- _EOF_
+
 # PEARANCE ADDENDUM(S)
 
 # ALIASES
@@ -134,6 +136,7 @@ function update_hosts {
 AEGIR_HOST=`uname -n`
 IP=`ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'`
 cat <<- _EOF_
+
 # PEARANCE ADDENDUM(S)
 
 $IP         $AEGIR_HOST
@@ -143,6 +146,7 @@ _EOF_
 
 function update_sshd_config {
 cat <<- _EOF_
+
 # PEARANCE ADDENDUM(S)
 
 ClientAliveInterval 120
@@ -152,6 +156,7 @@ _EOF_
 
 function update_sudoers {
 cat <<- _EOF_
+
 # PEARANCE ADDENDUM(S)
 
 aegir ALL=NOPASSWD: /usr/sbin/apache2ctl
@@ -168,8 +173,8 @@ projects[drupal][type] = "core"
 
 projects[hostmaster][type] = "profile"
 projects[hostmaster][download][type]  = "git"
-projects[hostmaster][download][url] = "https://itaine@github.com/Pearance/saasmaster.git"
-projects[hostmaster][download][directory_name] = "saasmaster"
+projects[hostmaster][download][url] = "git://github.com/Pearance/hostmaster.git"
+;projects[hostmaster][download][tag] = "Master"
 _EOF_
 }
 
@@ -237,19 +242,18 @@ echo "${BLD}${RED} Aegir User Created ${RESET}"
 if [ $(id -u) -eq 0 ]; then
 	# read -p "Enter username : " username
 	read -s -p "Enter password for support account: " password
+	echo -e "\n"
 	egrep "^support" /etc/passwd >/dev/null
 	if [ $? -eq 0 ]; then
 		echo -e "\nPearance support account already exists!"
-		exit 1
 	else
 		pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
 		useradd -m -p $pass support
-		[ $? -eq 0 ] && echo -e"${BLD}${RED}\nPearance Support User Created ${RESET}" || echo "Failed to add support account!"
+		[ $? -eq 0 ] && echo "${BLD}${RED}Pearance Support User Created ${RESET}" || echo "Failed to add support account!"
 	  usermod -G www-data,aegir support
 	fi
 else
 	echo "Only root may add a user to the system"
-	exit 2
 fi
 
 
@@ -259,15 +263,16 @@ read -N 1 REPLY
 echo
 if test "$REPLY" = "y" -o "$REPLY" = "Y"; then
   if [ $(id -u) -eq 0 ]; then
+    echo -e "\n"
   	read -p "Enter username : " username
   	read -s -p "Enter password : " password
+  	echo -e "\n"
   	read -p "Enter first name : " firstname
   	read -p "Enter last name : " lastname
   	read -p "Enter email address : " email
   	egrep "^$username" /etc/passwd >/dev/null
   	if [ $? -eq 0 ]; then
   		echo "$username exists!"
-  		exit 1
   	else
   		pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
   		useradd -m -p $pass $username
@@ -279,7 +284,6 @@ if test "$REPLY" = "y" -o "$REPLY" = "Y"; then
   	fi
   else
   	echo "Only root may add a user to the system"
-  	exit 2
   fi
 else
   echo "Proceeding..."
@@ -311,10 +315,9 @@ su -s /bin/bash aegir -c 'cd /var/aegir && /var/aegir/drush/drush dl provision-6
 
 # Configure Aegir Make
 cp -n /var/aegir/.drush/provision/aegir.make /var/aegir/.drush/provision/aegir.make.bak
-update_aegir_make >> /var/aegir/.drush/provision/aegir.make
+update_aegir_make > /var/aegir/.drush/provision/aegir.make
 echo "${BLD}${RED} Aegir Make Configured ${RESET}"
 
 
 # Install Saas Master (Hostmaster)
-# Be sure to modify the [url] inside /var/aegir/.drush/provision/aegir.make before proceeding
-su -s /bin/bash aegir -c 'cd /var/aegir && /var/aegir/drush/drush drush hostmaster-install'
+su -s /bin/bash aegir -c 'cd /var/aegir && /var/aegir/drush/drush hostmaster-install'
