@@ -12,7 +12,7 @@ CYAN=$(tput setaf 6)
 WHITE=$(tput setaf 7)
 RESET=$(tput sgr0)
 
-SCRIPT_DIR=`dirname $0`
+INCLUDES_DIR=`https://github.com/Pearance/drusaas/raw/master/includes`
 
 # DEFINE FUNCTIONS
 ###################################################################
@@ -20,7 +20,7 @@ SCRIPT_DIR=`dirname $0`
 
 function update_bashrc {
   cat <<- _EOF_
-  source $SCRIPT_DIR/includes/add_msg.sh
+  source $INCLUDES_DIR/add_msg.sh
 
   # enable bash completion in interactive shells
   if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
@@ -79,7 +79,7 @@ _EOF_
 
 function update_bash_aliases {
   cat <<- _EOF_
-  source $SCRIPT_DIR/includes/add_msg.sh
+  source $INCLUDES_DIR/add_msg.sh
 
   ###########
   # ALIASES #
@@ -137,7 +137,7 @@ function update_hosts {
   AEGIR_HOST=`uname -n`
   IP=`ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'`
   cat <<- _EOF_
-  source $SCRIPT_DIR/includes/add_msg.sh
+  source $INCLUDES_DIR/add_msg.sh
 
   $IP         $AEGIR_HOST
 _EOF_
@@ -146,7 +146,7 @@ _EOF_
 
 function update_sshd_config {
   cat <<- _EOF_
-  source $SCRIPT_DIR/includes/add_msg.sh
+  source $INCLUDES_DIR/add_msg.sh
 
   ClientAliveInterval 120
 _EOF_
@@ -155,7 +155,7 @@ _EOF_
 
 function update_sudoers {
   cat <<- _EOF_
-  source $SCRIPT_DIR/includes/add_msg.sh
+  source $INCLUDES_DIR/add_msg.sh
 
   aegir ALL=NOPASSWD: /usr/sbin/apache2ctl
 _EOF_
