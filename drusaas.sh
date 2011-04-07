@@ -12,7 +12,6 @@ CYAN=$(tput setaf 6)
 WHITE=$(tput setaf 7)
 RESET=$(tput sgr0)
 
-INCLUDES_DIR=`https://github.com/Pearance/drusaas/raw/master/includes`
 
 # DEFINE FUNCTIONS
 ###################################################################
@@ -20,7 +19,7 @@ INCLUDES_DIR=`https://github.com/Pearance/drusaas/raw/master/includes`
 
 function update_bashrc {
   cat <<- _EOF_
-  source https://github.com/Pearance/drusaas/raw/master/includes/add_msg.sh
+  # PEARANCE ADDENDUM(S)
 
   # enable bash completion in interactive shells
   if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
@@ -28,9 +27,8 @@ function update_bashrc {
   fi
 
 
-  #############
-  # VARIABLES #
-  #############
+  # VARIABLES
+  ##################################################################
 
   txtblk='\e[0;30m' # Black - Regular
   txtred='\e[0;31m' # Red
@@ -67,9 +65,9 @@ function update_bashrc {
   txtrst='\e[0m'    # Text Reset
 
 
-  ##########
-  # PROMPT #
-  ##########
+  # PROMPT
+  ##################################################################
+  
   # Set git autocompletion and PS1 integration
   GIT_PS1_SHOWDIRTYSTATE=true
   PS1="\n$bldgrn[$txtylw\u$bldgrn@$bldylw\H$bldgrn]$bldylw \w > $bldred\$(__git_ps1)\n$bldylw\\$ "
@@ -79,11 +77,10 @@ _EOF_
 
 function update_bash_aliases {
   cat <<- _EOF_
-  source https://github.com/Pearance/drusaas/raw/master/includes/add_msg.sh
+  # PEARANCE ADDENDUM(S)
 
-  ###########
-  # ALIASES #
-  ###########
+  # ALIASES
+  ##################################################################
 
   # COMMANDS (IMPROVED WITH FLAGS)
   alias rm='rm -if'
@@ -122,10 +119,10 @@ function update_bash_aliases {
   # DRUSH
   alias ddl='d dl --package-handler="git_drupalorg"'
 
-  #############
-  # FUNCTIONS #
-  #############
 
+  # FUNCTIONS
+  ##################################################################
+  
   function a2 {
     sudo service apache2 $1
   }
@@ -137,7 +134,7 @@ function update_hosts {
   AEGIR_HOST=`uname -n`
   IP=`ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'`
   cat <<- _EOF_
-  source https://github.com/Pearance/drusaas/raw/master/includes/add_msg.sh
+  # PEARANCE ADDENDUM(S)
 
   $IP         $AEGIR_HOST
 _EOF_
@@ -146,7 +143,7 @@ _EOF_
 
 function update_sshd_config {
   cat <<- _EOF_
-  source https://github.com/Pearance/drusaas/raw/master/includes/add_msg.sh
+  # PEARANCE ADDENDUM(S)
 
   ClientAliveInterval 120
 _EOF_
@@ -155,7 +152,7 @@ _EOF_
 
 function update_sudoers {
   cat <<- _EOF_
-  source https://github.com/Pearance/drusaas/raw/master/includes/add_msg.sh
+  # PEARANCE ADDENDUM(S)
 
   aegir ALL=NOPASSWD: /usr/sbin/apache2ctl
 _EOF_
