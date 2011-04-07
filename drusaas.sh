@@ -18,143 +18,158 @@ RESET=$(tput sgr0)
 
 
 function update_bashrc {
-  cat <<- _EOF_
-  # PEARANCE ADDENDUM(S)
+cat <<- _EOF_
+# PEARANCE ADDENDUM(S)
 
-  # enable bash completion in interactive shells
-  if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
-      . /etc/bash_completion
-  fi
-
-
-  # VARIABLES
-  ##################################################################
-
-  txtblk='\e[0;30m' # Black - Regular
-  txtred='\e[0;31m' # Red
-  txtgrn='\e[0;32m' # Green
-  txtylw='\e[0;33m' # Yellow
-  txtblu='\e[0;34m' # Blue
-  txtpur='\e[0;35m' # Purple
-  txtcyn='\e[0;36m' # Cyan
-  txtwht='\e[0;37m' # White
-  bldblk='\e[1;30m' # Black - Bold
-  bldred='\e[1;31m' # Red
-  bldgrn='\e[1;32m' # Green
-  bldylw='\e[1;33m' # Yellow
-  bldblu='\e[1;34m' # Blue
-  bldpur='\e[1;35m' # Purple
-  bldcyn='\e[1;36m' # Cyan
-  bldwht='\e[1;37m' # White
-  unkblk='\e[4;30m' # Black - Underline
-  undred='\e[4;31m' # Red
-  undgrn='\e[4;32m' # Green
-  undylw='\e[4;33m' # Yellow
-  undblu='\e[4;34m' # Blue
-  undpur='\e[4;35m' # Purple
-  undcyn='\e[4;36m' # Cyan
-  undwht='\e[4;37m' # White
-  bakblk='\e[40m'   # Black - Background
-  bakred='\e[41m'   # Red
-  badgrn='\e[42m'   # Green
-  bakylw='\e[43m'   # Yellow
-  bakblu='\e[44m'   # Blue
-  bakpur='\e[45m'   # Purple
-  bakcyn='\e[46m'   # Cyan
-  bakwht='\e[47m'   # White
-  txtrst='\e[0m'    # Text Reset
+# enable bash completion in interactive shells
+if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
+    . /etc/bash_completion
+fi
 
 
-  # PROMPT
-  ##################################################################
-  
-  # Set git autocompletion and PS1 integration
-  GIT_PS1_SHOWDIRTYSTATE=true
-  PS1="\n$bldgrn[$txtylw\u$bldgrn@$bldylw\H$bldgrn]$bldylw \w > $bldred\$(__git_ps1)\n$bldylw\\$ "
+# VARIABLES
+##################################################################
+
+txtblk='\e[0;30m' # Black - Regular
+txtred='\e[0;31m' # Red
+txtgrn='\e[0;32m' # Green
+txtylw='\e[0;33m' # Yellow
+txtblu='\e[0;34m' # Blue
+txtpur='\e[0;35m' # Purple
+txtcyn='\e[0;36m' # Cyan
+txtwht='\e[0;37m' # White
+bldblk='\e[1;30m' # Black - Bold
+bldred='\e[1;31m' # Red
+bldgrn='\e[1;32m' # Green
+bldylw='\e[1;33m' # Yellow
+bldblu='\e[1;34m' # Blue
+bldpur='\e[1;35m' # Purple
+bldcyn='\e[1;36m' # Cyan
+bldwht='\e[1;37m' # White
+unkblk='\e[4;30m' # Black - Underline
+undred='\e[4;31m' # Red
+undgrn='\e[4;32m' # Green
+undylw='\e[4;33m' # Yellow
+undblu='\e[4;34m' # Blue
+undpur='\e[4;35m' # Purple
+undcyn='\e[4;36m' # Cyan
+undwht='\e[4;37m' # White
+bakblk='\e[40m'   # Black - Background
+bakred='\e[41m'   # Red
+badgrn='\e[42m'   # Green
+bakylw='\e[43m'   # Yellow
+bakblu='\e[44m'   # Blue
+bakpur='\e[45m'   # Purple
+bakcyn='\e[46m'   # Cyan
+bakwht='\e[47m'   # White
+txtrst='\e[0m'    # Text Reset
+
+
+# PROMPT
+##################################################################
+
+# Set git autocompletion and PS1 integration
+GIT_PS1_SHOWDIRTYSTATE=true
+PS1="\n$bldgrn[$txtylw\u$bldgrn@$bldylw\H$bldgrn]$bldylw \w > $bldred\$(__git_ps1)\n$bldylw\\$ "
 _EOF_
 }
 
 
 function update_bash_aliases {
-  cat <<- _EOF_
-  # PEARANCE ADDENDUM(S)
+cat <<- _EOF_
+# PEARANCE ADDENDUM(S)
 
-  # ALIASES
-  ##################################################################
+# ALIASES
+##################################################################
 
-  # COMMANDS (IMPROVED WITH FLAGS)
-  alias rm='rm -if'
-  alias cp='cp -i'
-  alias mv='mv -i'
-  alias ra='rm -r * .*'
-  alias df='df -h'
-  alias du='du -sh'
-  alias less='less -r'
-  alias whence='type -a'
-  alias grep='grep --color'
-  alias tarx='tar -xzf'
-  alias tarc='tar -zcf'
+# COMMANDS (IMPROVED WITH FLAGS)
+alias rm='rm -if'
+alias cp='cp -i'
+alias mv='mv -i'
+alias ra='rm -r * .*'
+alias df='df -h'
+alias du='du -sh'
+alias less='less -r'
+alias whence='type -a'
+alias grep='grep --color'
+alias tarx='tar -xzf'
+alias tarc='tar -zcf'
 
-  # NAVIGATION
-  alias ls='ls -hF --color --group-directories-first'
-  alias ll='clear && ls -hFlX --color  --group-directories-first'
-  alias la='clear && ls -hFlXa --color --group-directories-first'
-  alias ..='cd ..'
-  alias tt='tree -C'
-  alias td='tree -dC'
+# NAVIGATION
+alias ls='ls -hF --color --group-directories-first'
+alias ll='clear && ls -hFlX --color  --group-directories-first'
+alias la='clear && ls -hFlXa --color --group-directories-first'
+alias ..='cd ..'
+alias tt='tree -C'
+alias td='tree -dC'
 
-  # APACHE
-  alias lsa='ll /etc/apache2/sites-available'
-  alias lma='ll /etc/apache2/mods-available'
-  alias lse='ll /etc/apache2/sites-enabled'
-  alias lme='ll /etc/apache2/mods-enabled'
-  alias sa='cd /etc/apache2/sites-available && ll'
-  alias ma='cd /etc/apache2/mods-available && ll'
-  alias se='cd /etc/apache2/sites-enabled && ll'
-  alias me='cd /etc/apache2/mods-enabled && ll'
+# APACHE
+alias lsa='ll /etc/apache2/sites-available'
+alias lma='ll /etc/apache2/mods-available'
+alias lse='ll /etc/apache2/sites-enabled'
+alias lme='ll /etc/apache2/mods-enabled'
+alias sa='cd /etc/apache2/sites-available && ll'
+alias ma='cd /etc/apache2/mods-available && ll'
+alias se='cd /etc/apache2/sites-enabled && ll'
+alias me='cd /etc/apache2/mods-enabled && ll'
 
-  # GIT
-  alias gitsh='git.sh'
+# GIT
+alias gitsh='git.sh'
 
-  # DRUSH
-  alias ddl='d dl --package-handler="git_drupalorg"'
+# DRUSH
+alias ddl='d dl --package-handler="git_drupalorg"'
 
 
-  # FUNCTIONS
-  ##################################################################
-  
-  function a2 {
-    sudo service apache2 $1
-  }
+# FUNCTIONS
+##################################################################
+
+function a2 {
+  sudo service apache2 $1
+}
 _EOF_
 }
 
 
 function update_hosts {
-  AEGIR_HOST=`uname -n`
-  IP=`ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'`
-  cat <<- _EOF_
-  # PEARANCE ADDENDUM(S)
+AEGIR_HOST=`uname -n`
+IP=`ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'`
+cat <<- _EOF_
+# PEARANCE ADDENDUM(S)
 
-  $IP         $AEGIR_HOST
+$IP         $AEGIR_HOST
 _EOF_
 }
 
 
 function update_sshd_config {
-  cat <<- _EOF_
-  # PEARANCE ADDENDUM(S)
+cat <<- _EOF_
+# PEARANCE ADDENDUM(S)
 
-  ClientAliveInterval 120
+ClientAliveInterval 120
 _EOF_
 }
 
 
 function update_sudoers {
-  cat <<- _EOF_
-  # PEARANCE ADDENDUM(S)
+cat <<- _EOF_
+# PEARANCE ADDENDUM(S)
 
-  aegir ALL=NOPASSWD: /usr/sbin/apache2ctl
+aegir ALL=NOPASSWD: /usr/sbin/apache2ctl
+_EOF_
+}
+
+
+function update_aegir_make {
+cat <<- _EOF_
+core = 6.x
+api = 2
+
+projects[drupal][type] = "core"
+
+projects[hostmaster][type] = "profile"
+projects[hostmaster][download][type]  = "git"
+projects[hostmaster][download][url] = "https://itaine@github.com/Pearance/saasmaster.git"
+projects[hostmaster][download][directory_name] = "saasmaster"
 _EOF_
 }
 
@@ -294,6 +309,12 @@ echo "${BLD}${RED} Drush Installed ${RESET}"
 su -s /bin/bash aegir -c 'cd /var/aegir && /var/aegir/drush/drush dl provision-6.x-1.0-rc3'
 
 
+# Configure Aegir Make
+cp -n /var/aegir/.drush/provision/aegir.make /var/aegir/.drush/provision/aegir.make.bak
+update_aegir_make >> /var/aegir/.drush/provision/aegir.make
+echo "${BLD}${RED} Aegir Make Configured ${RESET}"
+
+
 # Install Saas Master (Hostmaster)
 # Be sure to modify the [url] inside /var/aegir/.drush/provision/aegir.make before proceeding
-# su -s /bin/bash aegir -c 'cd /var/aegir && /var/aegir/drush/drush drush hostmaster-install'
+su -s /bin/bash aegir -c 'cd /var/aegir && /var/aegir/drush/drush drush hostmaster-install'
