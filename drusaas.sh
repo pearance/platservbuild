@@ -2,26 +2,25 @@
 
 # DEFINE VARIABLES
 ###################################################################
-BLD=$(tput bold); RED=$(tput setaf 1); GREEN=$(tput setaf 2);
-YLW=$(tput setaf 3); BLUE=$(tput setaf 4); PURPLE=$(tput setaf 5);
-CYAN=$(tput setaf 6); WHITE=$(tput setaf 7); RESET=$(tput sgr0);
+BLD=$(tput bold)
+RED=$(tput setaf 1)
+GREEN=$(tput setaf 2)
+YLW=$(tput setaf 3)
+BLUE=$(tput setaf 4)
+PURPLE=$(tput setaf 5)
+CYAN=$(tput setaf 6)
+WHITE=$(tput setaf 7)
+RESET=$(tput sgr0)
 
+SCRIPT_DIR=`dirname $0`
 
 # DEFINE FUNCTIONS
 ###################################################################
 
-function addendum_heading {
-echo "########################"
-echo "# PEARANCE ADDENDUM(S) #"
-echo "########################"
-}
-
 
 function update_bashrc {
   cat <<- _EOF_
-  ########################
-  # PEARANCE ADDENDUM(S) #
-  ########################
+  source $SCRIPT_DIR/includes/add_msg.sh
 
   # enable bash completion in interactive shells
   if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
@@ -80,10 +79,7 @@ _EOF_
 
 function update_bash_aliases {
   cat <<- _EOF_
-  ########################
-  # PEARANCE ADDENDUM(S) #
-  ########################
-
+  source $SCRIPT_DIR/includes/add_msg.sh
 
   ###########
   # ALIASES #
@@ -141,10 +137,7 @@ function update_hosts {
   AEGIR_HOST=`uname -n`
   IP=`ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'`
   cat <<- _EOF_
-
-  ########################
-  # PEARANCE ADDENDUM(S) #
-  ########################
+  source $SCRIPT_DIR/includes/add_msg.sh
 
   $IP         $AEGIR_HOST
 _EOF_
@@ -153,10 +146,7 @@ _EOF_
 
 function update_sshd_config {
   cat <<- _EOF_
-
-  ########################
-  # PEARANCE ADDENDUM(S) #
-  ########################
+  source $SCRIPT_DIR/includes/add_msg.sh
 
   ClientAliveInterval 120
 _EOF_
@@ -165,8 +155,7 @@ _EOF_
 
 function update_sudoers {
   cat <<- _EOF_
-
-  addendum_heading
+  source $SCRIPT_DIR/includes/add_msg.sh
 
   aegir ALL=NOPASSWD: /usr/sbin/apache2ctl
 _EOF_
@@ -181,17 +170,20 @@ clear
 echo ""
 read -p "Enter hostname: " newhostname
 
+
 # Install Packages
 aptitude update
 aptitude full-upgrade -y
-aptitude install -y apache2 php5 php5-cli php5-gd php5-mysql mysql-server
+aptitude install -y apache2 php5 php5-cli php5-gd php5-mysql mysql-server landscape-common
 aptitude install -y postfix sudo rsync git-core unzip wget bash-completion
 echo "${BLD}${RED} Packages Installed ${RESET}"
+
 
 # Update Hostname
 echo $newhostname > /etc/hostname
 hostname -F /etc/hostname
 echo "${BLD}${RED} Hostname Updated ${RESET}"
+
 
 # Configure Bash Environment (root)
 cp -n ~/.bashrc ~/.bashrc.bak
@@ -201,11 +193,13 @@ source ~/.bashrc
 source ~/.bash_aliases
 echo "${BLD}${RED} Bash Environment Configured (root) ${RESET}"
 
+
 # Configure Bash Environment (skel)
 cp -n /etc/skel/.bashrc /etc/skel/.bashrc.bak
 update_bashrc >> /etc/skel/.bashrc
 update_bash_aliases > /etc/skel/.bash_aliases
 echo "${BLD}${RED} Bash Environment Configured (skel) ${RESET}"
+
 
 # Configure SSH
 cp -n /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
@@ -213,11 +207,19 @@ update_sshd_config >> /etc/ssh/sshd_config
 /etc/init.d/ssh restart
 echo "${BLD}${RED} SSH Configured ${RESET}"
 
+
 # Configure DNS
 cp -n /etc/hosts /etc/hosts.bak
 update_hosts >> /etc/hosts
 AEGIR_HOST=`uname -n`
 echo "${BLD}${RED} DNS Configured ${RESET}"
+
+
+# Create Aegir User
+adduser --system --group --home /var/aegir aegir
+adduser aegir www-data
+echo "${BLD}${RED} Aegir User Created ${RESET}"
+
 
 # Create Pearance Support User
 if [ $(id -u) -eq 0 ]; then
@@ -225,19 +227,18 @@ if [ $(id -u) -eq 0 ]; then
 	read -s -p "Enter password for support account: " password
 	egrep "^support" /etc/passwd >/dev/null
 	if [ $? -eq 0 ]; then
-		echo "Pearance support account already exists!"
+		echo -e "\nPearance support account already exists!"
 		exit 1
 	else
 		pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
 		useradd -m -p $pass support
-		[ $? -eq 0 ] && echo "${BLD}${RED} Pearance Support User Created ${RESET}" || echo "Failed to add support account!"
-	  usermod -G www-data,aegir support		
+		[ $? -eq 0 ] && echo -e"${BLD}${RED}\nPearance Support User Created ${RESET}" || echo "Failed to add support account!"
+	  usermod -G www-data,aegir support
 	fi
 else
 	echo "Only root may add a user to the system"
 	exit 2
 fi
-
 
 
 # Create Additional User Account
@@ -273,30 +274,28 @@ else
 fi
 
 
-
-# Create Aegir User
-adduser --system --group --home /var/aegir aegir
-adduser aegir www-data
-echo "${BLD}${RED} Aegir User Created ${RESET}"
-
 # Configure Apache
 a2enmod rewrite
 ln -s /var/aegir/config/apache.conf /etc/apache2/conf.d/aegir.conf
 echo "${BLD}${RED} Apache Configured ${RESET}"
+
 
 # Configure Sudo
 cp -n /etc/sudoers /etc/sudoers.bak
 update_sudoers >> /etc/sudoers
 echo "${BLD}${RED} Sudo Configured ${RESET}"
 
+
 # Install Drush
 su -s /bin/bash aegir -c 'cd /var/aegir && git clone --branch master http://git.drupal.org/project/drush.git'
 su -s /bin/bash aegir -c 'cd /var/aegir/drush && git checkout 7.x-4.4'
 echo "${BLD}${RED} Drush Installed ${RESET}"
 
+
 # Install Provision
 # Be sure to modify for the latest release
 su -s /bin/bash aegir -c 'cd /var/aegir && /var/aegir/drush/drush dl provision-6.x-1.0-rc3'
+
 
 # Install Saas Master (Hostmaster)
 # Be sure to modify the [url] inside /var/aegir/.drush/provision/aegir.make before proceeding
