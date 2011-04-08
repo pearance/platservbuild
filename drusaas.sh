@@ -225,7 +225,10 @@ echo -e "\n${BLD}${RED} Hostname Updated ${RESET}\n"
 
 # Configure Bash Environment (root)
 cp -n ~/.bashrc ~/.bashrc.bak
-cp -f ~/.bashrc.bak ~/.bashrc
+if [ -e ~/.bashrc.bak ]; then
+  cp -f ~/.bashrc.bak ~/.bashrc
+fi
+
 update_bashrc >> ~/.bashrc
 update_bash_aliases > ~/.bash_aliases
 source ~/.bashrc
