@@ -173,7 +173,7 @@ _EOF_
 }
 
 
-function setup_gitconfig()
+function setup_gitconfig {
         cat > /home/$username/.gitconfig << _EOF_
         [user]
             name = $fullname
