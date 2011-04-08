@@ -214,13 +214,13 @@ aptitude full-upgrade -y
 aptitude install -y apache2 php5 php5-cli php5-gd php5-mysql mysql-server landscape-common
 aptitude install -y postfix sudo rsync git-core unzip wget bash-completion
 aptitude install -y update-notifier-common
-echo -e "\n${BLD}${RED} Packages Installed ${RESET}"
+echo -e "\n${BLD}${RED} Packages Installed ${RESET}\n"
 
 
 # Update Hostname
 echo $newhostname > /etc/hostname
 hostname -F /etc/hostname
-echo -e "\n${BLD}${RED} Hostname Updated ${RESET}"
+echo -e "\n${BLD}${RED} Hostname Updated ${RESET}\n"
 
 
 # Configure Bash Environment (root)
@@ -230,7 +230,7 @@ update_bashrc >> ~/.bashrc
 update_bash_aliases > ~/.bash_aliases
 source ~/.bashrc
 source ~/.bash_aliases
-echo -e "\n${BLD}${RED} Bash Environment Configured (root) ${RESET}"
+echo -e "\n${BLD}${RED} Bash Environment Configured (root) ${RESET}\n"
 
 
 # Configure Bash Environment (skel)
@@ -238,14 +238,14 @@ cp -n /etc/skel/.bashrc /etc/skel/.bashrc.bak
 cp -f /etc/skel/.bashrc.bak /etc/skel/.bashrc
 update_bashrc >> /etc/skel/.bashrc
 update_bash_aliases > /etc/skel/.bash_aliases
-echo -e "\n${BLD}${RED} Bash Environment Configured (skel) ${RESET}"
+echo -e "\n${BLD}${RED} Bash Environment Configured (skel) ${RESET}\n"
 
 
 # Configure SSH
 cp -n /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
 update_sshd_config >> /etc/ssh/sshd_config
 /etc/init.d/ssh restart
-echo -e "\n${BLD}${RED} SSH Configured ${RESET}"
+echo -e "\n${BLD}${RED} SSH Configured ${RESET}\n"
 
 
 # Configure DNS
@@ -253,13 +253,13 @@ cp -n /etc/hosts /etc/hosts.bak
 cp -f/etc/hosts.bak /etc/hosts
 update_hosts >> /etc/hosts
 AEGIR_HOST=`uname -n`
-echo -e "\n${BLD}${RED} DNS Configured ${RESET}"
+echo -e "\n${BLD}${RED} DNS Configured ${RESET}\n"
 
 
 # Create Aegir User
 adduser --system --group --home /var/aegir aegir
 adduser aegir www-data
-echo -e "\n${BLD}${RED} Aegir User Created ${RESET}"
+echo -e "\n${BLD}${RED} Aegir User Created ${RESET}\n"
 
 
 # Create Pearance Support User
@@ -276,15 +276,15 @@ if [ $(id -u) -eq 0 ]; then
         setup_gitconfig support support@pearance.com Pearance
         chown support.support /home/support/.gitconfig
 
-        [ $? -eq 0 ] && echo -e "\n${BLD}${RED}Pearance Support User Created ${RESET}" || echo -e "\nFailed to add support account!"
+        [ $? -eq 0 ] && echo -e "\n${BLD}${RED}Pearance Support User Created ${RESET}\n" || echo -e "\nFailed to add support account!"
     fi
 else
-    echo -e "\nOnly root may add a user to the system"
+    echo -e "\nOnly root may add a user to the system\n"
 fi
 
 
 # Create Additional User Account
-echo -n "Do you want to add another user? [y/n] "
+echo -n -e "\nDo you want to add another user? [y/n] "
 read -N 1 REPLY
 if test "$REPLY" = "y" -o "$REPLY" = "Y"; then
   if [ $(id -u) -eq 0 ]; then
@@ -317,20 +317,20 @@ fi
 # Configure Apache
 a2enmod rewrite
 ln -s /var/aegir/config/apache.conf /etc/apache2/conf.d/aegir.conf
-echo -e "\n${BLD}${RED} Apache Configured ${RESET}"
+echo -e "\n${BLD}${RED} Apache Configured ${RESET}\n"
 
 
 # Configure Sudo
 cp -n /etc/sudoers /etc/sudoers.bak
 cp -f /etc/sudoers.bak /etc/sudoers
 update_sudoers >> /etc/sudoers
-echo -e "\n${BLD}${RED} Sudo Configured ${RESET}"
+echo -e "\n${BLD}${RED} Sudo Configured ${RESET}\n"
 
 
 # Install Drush
 su -s /bin/bash aegir -c 'cd /var/aegir && git clone --branch master http://git.drupal.org/project/drush.git'
 su -s /bin/bash aegir -c 'cd /var/aegir/drush && git checkout 7.x-4.4'
-echo -e "\n${BLD}${RED} Drush Installed ${RESET}"
+echo -e "\n${BLD}${RED} Drush Installed ${RESET}\n"
 
 
 # Install Provision
@@ -341,10 +341,10 @@ su -s /bin/bash aegir -c 'cd /var/aegir && /var/aegir/drush/drush dl provision-6
 # Configure Aegir Make
 cp -n /var/aegir/.drush/provision/aegir.make /var/aegir/.drush/provision/aegir.make.bak
 update_aegir_make > /var/aegir/.drush/provision/aegir.make
-echo -e "\n${BLD}${RED} Aegir Make Configured ${RESET}"
+echo -e "\n${BLD}${RED} Aegir Make Configured ${RESET}\n"
 
 
 # Install SaaS Hostmaster
 su -s /bin/bash aegir -c 'cd /var/aegir && /var/aegir/drush/drush hostmaster-install'
-echo -e "\n${BLD}${RED} SaaS Hostmaster Installed! ${RESET}"
+echo -e "\n${BLD}${RED} SaaS Hostmaster Installed! ${RESET}\n"
 
