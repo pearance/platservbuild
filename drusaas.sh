@@ -249,7 +249,7 @@ if [ $(id -u) -eq 0 ]; then
 		echo -e "\nPearance support account already exists!"
 	else
 		pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
-		useradd -m -p $pass support
+		useradd -m -p $pass -s bash support
 		[ $? -eq 0 ] && echo "${BLD}${RED}Pearance Support User Created ${RESET}" || echo "Failed to add support account!"
 	  usermod -G www-data,aegir support
 	fi
@@ -276,7 +276,7 @@ if test "$REPLY" = "y" -o "$REPLY" = "Y"; then
   		echo "$username exists!"
   	else
   		pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
-  		useradd -m -p $pass $username
+  		useradd -m -p $pass -s bash $username
   		usermod -G www-data,aegir $username
   		# Setup Git
       git config --global user.name "$firstname $lastname"
@@ -322,3 +322,4 @@ echo "${BLD}${RED} Aegir Make Configured ${RESET}"
 
 # Install Saas Master (Hostmaster)
 su -s /bin/bash aegir -c 'cd /var/aegir && /var/aegir/drush/drush hostmaster-install'
+
