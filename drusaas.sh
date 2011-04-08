@@ -22,12 +22,6 @@ cat <<- _EOF_
 
 # PEARANCE ADDENDUM(S)
 
-# enable bash completion in interactive shells
-if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
-    . /etc/bash_completion
-fi
-
-
 # VARIABLES
 ##################################################################
 
@@ -179,6 +173,32 @@ _EOF_
 }
 
 
+function setup_gitconfig()
+        cat > /home/$username/.gitconfig << _EOF_
+        [user]
+            name = $fullname
+            email = $email
+        [log]
+            decorate = full
+        [color]
+            ui = auto
+            status = auto
+            branch = auto
+            interactive = auto
+            diff = auto
+        [pager]
+            show-branch = true
+        [format]
+            numbered = auto
+        [core]
+            legacyheaders = false
+            excludesfile = /home/$username/.gitignore
+        [alias]
+            lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+_EOF_
+}
+
+
 # START SCRIPT
 ###################################################################
 
@@ -205,6 +225,7 @@ echo -e "\n${BLD}${RED} Hostname Updated ${RESET}"
 
 # Configure Bash Environment (root)
 cp -n ~/.bashrc ~/.bashrc.bak
+cp ~/.bashrc.bak ~/.bashrc
 update_bashrc >> ~/.bashrc
 update_bash_aliases > ~/.bash_aliases
 source ~/.bashrc
@@ -214,6 +235,7 @@ echo -e "\n${BLD}${RED} Bash Environment Configured (root) ${RESET}"
 
 # Configure Bash Environment (skel)
 cp -n /etc/skel/.bashrc /etc/skel/.bashrc.bak
+cp /etc/skel/.bashrc.bak /etc/skel/.bashrc
 update_bashrc >> /etc/skel/.bashrc
 update_bash_aliases > /etc/skel/.bash_aliases
 echo -e "\n${BLD}${RED} Bash Environment Configured (skel) ${RESET}"
@@ -228,6 +250,7 @@ echo -e "\n${BLD}${RED} SSH Configured ${RESET}"
 
 # Configure DNS
 cp -n /etc/hosts /etc/hosts.bak
+cp /etc/hosts.bak /etc/hosts
 update_hosts >> /etc/hosts
 AEGIR_HOST=`uname -n`
 echo -e "\n${BLD}${RED} DNS Configured ${RESET}"
@@ -241,7 +264,6 @@ echo -e "\n${BLD}${RED} Aegir User Created ${RESET}"
 
 # Create Pearance Support User
 if [ $(id -u) -eq 0 ]; then
-    # read -p "Enter username : " username
     read -s -p "Enter password for support account: " password
     echo -e "\n"
     egrep "^support" /etc/passwd >/dev/null
@@ -250,8 +272,11 @@ if [ $(id -u) -eq 0 ]; then
     else
         pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
         useradd -m -p $pass -s /bin/bash support
+        usermod -G www-data,aegir,sudo support
+        setup_gitconfig support support@pearance.com Pearance
+        chown support.support /home/support/.gitconfig
+
         [ $? -eq 0 ] && echo -e "\n${BLD}${RED}Pearance Support User Created ${RESET}" || echo -e "\nFailed to add support account!"
-        usermod -G www-data,aegir support
     fi
 else
     echo -e "\nOnly root may add a user to the system"
@@ -267,8 +292,7 @@ if test "$REPLY" = "y" -o "$REPLY" = "Y"; then
     read -p "Enter username : " username
     read -s -p "Enter password : " password
     echo -e "\n"
-    read -p "Enter first name : " firstname
-    read -p "Enter last name : " lastname
+    read -p "Enter full name : " fullname
     read -p "Enter email address : " email
     egrep "^$username" /etc/passwd >/dev/null
 
@@ -277,30 +301,9 @@ if test "$REPLY" = "y" -o "$REPLY" = "Y"; then
     else
         pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
         useradd -m -p $pass -s /bin/bash $username
-        usermod -G www-data,aegir $username
-        # Setup Git
-        cat > /home/$username/.gitconfig << _EOF_
-        [user]
-            name = $firstname $lastname
-            email = $email
-        [log]
-            decorate = full
-        [color]
-            ui = auto
-            status = auto
-            branch = auto
-            interactive = auto
-            diff = auto
-        [pager]
-            show-branch = true
-        [format]
-            numbered = auto
-        [core]
-            legacyheaders = false
-            excludesfile = /home/$username/.gitignore
-        [alias]
-            lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
-_EOF_
+        usermod -G www-data,aegir,sudo $username
+        setup_gitconfig $username $email $fullname
+        chown $username.$username /home/$username/.gitconfig
         [ $? -eq 0 ] && echo -e "\nUser $username has been added to system!" || echo -e "\nFailed to add another user!"
     fi
   else
@@ -319,6 +322,7 @@ echo -e "\n${BLD}${RED} Apache Configured ${RESET}"
 
 # Configure Sudo
 cp -n /etc/sudoers /etc/sudoers.bak
+cp /etc/sudoers.bak /etc/sudoers
 update_sudoers >> /etc/sudoers
 echo -e "\n${BLD}${RED} Sudo Configured ${RESET}"
 
