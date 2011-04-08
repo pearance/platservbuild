@@ -225,7 +225,7 @@ echo -e "\n${BLD}${RED} Hostname Updated ${RESET}"
 
 # Configure Bash Environment (root)
 cp -n ~/.bashrc ~/.bashrc.bak
-cp ~/.bashrc.bak ~/.bashrc
+cp -f ~/.bashrc.bak ~/.bashrc
 update_bashrc >> ~/.bashrc
 update_bash_aliases > ~/.bash_aliases
 source ~/.bashrc
@@ -235,7 +235,7 @@ echo -e "\n${BLD}${RED} Bash Environment Configured (root) ${RESET}"
 
 # Configure Bash Environment (skel)
 cp -n /etc/skel/.bashrc /etc/skel/.bashrc.bak
-cp /etc/skel/.bashrc.bak /etc/skel/.bashrc
+cp -f /etc/skel/.bashrc.bak /etc/skel/.bashrc
 update_bashrc >> /etc/skel/.bashrc
 update_bash_aliases > /etc/skel/.bash_aliases
 echo -e "\n${BLD}${RED} Bash Environment Configured (skel) ${RESET}"
@@ -250,7 +250,7 @@ echo -e "\n${BLD}${RED} SSH Configured ${RESET}"
 
 # Configure DNS
 cp -n /etc/hosts /etc/hosts.bak
-cp /etc/hosts.bak /etc/hosts
+cp -f/etc/hosts.bak /etc/hosts
 update_hosts >> /etc/hosts
 AEGIR_HOST=`uname -n`
 echo -e "\n${BLD}${RED} DNS Configured ${RESET}"
@@ -322,7 +322,7 @@ echo -e "\n${BLD}${RED} Apache Configured ${RESET}"
 
 # Configure Sudo
 cp -n /etc/sudoers /etc/sudoers.bak
-cp /etc/sudoers.bak /etc/sudoers
+cp -f /etc/sudoers.bak /etc/sudoers
 update_sudoers >> /etc/sudoers
 echo -e "\n${BLD}${RED} Sudo Configured ${RESET}"
 
