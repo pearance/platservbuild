@@ -279,8 +279,8 @@ if test "$REPLY" = "y" -o "$REPLY" = "Y"; then
   		useradd -m -p $pass -s bash $username
   		usermod -G www-data,aegir $username
   		# Setup Git
-      git config --global user.name "$firstname $lastname"
-      git config --global user.email "$email"
+      su -s /bin/bash $username -c 'git config --global user.name "$firstname $lastname"'
+      su -s /bin/bash $username -c 'git config --global user.email "$email"'
   		[ $? -eq 0 ] && echo "User $username has been added to system!" || echo "Failed to add another user!"
   	fi
   else
