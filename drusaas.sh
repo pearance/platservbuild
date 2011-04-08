@@ -193,6 +193,7 @@ aptitude update
 aptitude full-upgrade -y
 aptitude install -y apache2 php5 php5-cli php5-gd php5-mysql mysql-server landscape-common
 aptitude install -y postfix sudo rsync git-core unzip wget bash-completion
+aptitude install -y update-notifier-common
 echo "${BLD}${RED} Packages Installed ${RESET}"
 
 
