@@ -241,20 +241,20 @@ echo -e "\n${BLD}${RED} Aegir User Created ${RESET}"
 
 # Create Pearance Support User
 if [ $(id -u) -eq 0 ]; then
-	# read -p "Enter username : " username
-	read -s -p "Enter password for support account: " password
-	echo -e "\n"
-	egrep "^support" /etc/passwd >/dev/null
-	if [ $? -eq 0 ]; then
-		echo -e "\nPearance support account already exists!"
-	else
-		pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
-		useradd -m -p $pass -s /bin/bash support
-		[ $? -eq 0 ] && echo -e "\n${BLD}${RED}Pearance Support User Created ${RESET}" || echo -e "\nFailed to add support account!"
-	  usermod -G www-data,aegir support
-	fi
+    # read -p "Enter username : " username
+    read -s -p "Enter password for support account: " password
+    echo -e "\n"
+    egrep "^support" /etc/passwd >/dev/null
+    if [ $? -eq 0 ]; then
+        echo -e "\nPearance support account already exists!"
+    else
+        pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
+        useradd -m -p $pass -s /bin/bash support
+        [ $? -eq 0 ] && echo -e "\n${BLD}${RED}Pearance Support User Created ${RESET}" || echo -e "\nFailed to add support account!"
+        usermod -G www-data,aegir support
+    fi
 else
-	echo -e "\nOnly root may add a user to the system"
+    echo -e "\nOnly root may add a user to the system"
 fi
 
 
@@ -264,26 +264,47 @@ read -N 1 REPLY
 if test "$REPLY" = "y" -o "$REPLY" = "Y"; then
   if [ $(id -u) -eq 0 ]; then
     echo
-  	read -p "Enter username : " username
-  	read -s -p "Enter password : " password
-  	echo -e "\n"
-  	read -p "Enter first name : " firstname
-  	read -p "Enter last name : " lastname
-  	read -p "Enter email address : " email
-  	egrep "^$username" /etc/passwd >/dev/null
-  	if [ $? -eq 0 ]; then
-  		echo -e "\n$username exists!"
-  	else
-  		pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
-  		useradd -m -p $pass -s /bin/bash $username
-  		usermod -G www-data,aegir $username
-  		# Setup Git
-      su -s /bin/bash $username -c 'git config --global user.name "$firstname $lastname"'
-      su -s /bin/bash $username -c 'git config --global user.email "$email"'
-  		[ $? -eq 0 ] && echo -e "\nUser $username has been added to system!" || echo -e "\nFailed to add another user!"
-  	fi
+    read -p "Enter username : " username
+    read -s -p "Enter password : " password
+    echo -e "\n"
+    read -p "Enter first name : " firstname
+    read -p "Enter last name : " lastname
+    read -p "Enter email address : " email
+    egrep "^$username" /etc/passwd >/dev/null
+
+    if [ $? -eq 0 ]; then
+        echo -e "\n$username exists!"
+    else
+        pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
+        useradd -m -p $pass -s /bin/bash $username
+        usermod -G www-data,aegir $username
+        # Setup Git
+        cat > /home/$username/.gitconfig << _EOF_
+        [user]
+            name = $firstname $lastname
+            email = $email
+        [log]
+            decorate = full
+        [color]
+            ui = auto
+            status = auto
+            branch = auto
+            interactive = auto
+            diff = auto
+        [pager]
+            show-branch = true
+        [format]
+            numbered = auto
+        [core]
+            legacyheaders = false
+            excludesfile = /home/$username/.gitignore
+        [alias]
+            lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+_EOF_
+        [ $? -eq 0 ] && echo -e "\nUser $username has been added to system!" || echo -e "\nFailed to add another user!"
+    fi
   else
-  	echo -e "\nOnly root may add a user to the system"
+    echo -e "\nOnly root may add a user to the system"
   fi
 else
   echo -e "\nProceeding..."
