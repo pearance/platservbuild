@@ -20,7 +20,14 @@ RESET=$(tput sgr0)
 function update_bashrc {
 cat <<- _EOF_
 
-# PEARANCE ADDENDUM(S)
+#######################
+# PEARANCE AMMENDMENT #
+#######################
+
+# enable bash completion in interactive shells
+if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
+    . /etc/bash_completion
+fi
 
 # VARIABLES
 ##################################################################
@@ -73,7 +80,9 @@ _EOF_
 function update_bash_aliases {
 cat <<- _EOF_
 
-# PEARANCE ADDENDUM(S)
+#######################
+# PEARANCE AMMENDMENT #
+#######################
 
 # ALIASES
 ##################################################################
@@ -131,7 +140,9 @@ AEGIR_HOST=`uname -n`
 IP=`ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'`
 cat <<- _EOF_
 
-# PEARANCE ADDENDUM(S)
+#######################
+# PEARANCE AMMENDMENT #
+#######################
 
 $IP         $AEGIR_HOST
 _EOF_
@@ -141,7 +152,9 @@ _EOF_
 function update_sshd_config {
 cat <<- _EOF_
 
-# PEARANCE ADDENDUM(S)
+#######################
+# PEARANCE AMMENDMENT #
+#######################
 
 ClientAliveInterval 120
 _EOF_
@@ -151,7 +164,9 @@ _EOF_
 function update_sudoers {
 cat <<- _EOF_
 
-# PEARANCE ADDENDUM(S)
+#######################
+# PEARANCE AMMENDMENT #
+#######################
 
 aegir ALL=NOPASSWD: /usr/sbin/apache2ctl
 _EOF_
@@ -160,6 +175,9 @@ _EOF_
 
 function update_aegir_make {
 cat <<- _EOF_
+;#######################
+;# PEARANCE AMMENDMENT #
+;#######################
 core = 6.x
 api = 2
 
@@ -175,6 +193,10 @@ _EOF_
 
 function setup_gitconfig {
 cat > /home/$username/.gitconfig << _EOF_
+#######################
+# PEARANCE AMMENDMENT #
+#######################
+
 [user]
   name = $fullname
   email = $email
@@ -224,10 +246,8 @@ echo -e "\n${BLD}${RED} Hostname Updated ${RESET}\n"
 
 
 # Configure Bash Environment (root)
-cp -n ~/.bashrc ~/.bashrc.bak
-if [ -e ~/.bashrc.bak ]; then
-  /bin/cp -f ~/.bashrc.bak ~/.bashrc
-fi
+/bin/cp -n ~/.bashrc ~/.bashrc.bak
+/bin/cp -f ~/.bashrc.bak ~/.bashrc
 
 update_bashrc >> ~/.bashrc
 update_bash_aliases > ~/.bash_aliases
@@ -237,23 +257,23 @@ echo -e "\n${BLD}${RED} Bash Environment Configured (root) ${RESET}\n"
 
 
 # Configure Bash Environment (skel)
-cp -n /etc/skel/.bashrc /etc/skel/.bashrc.bak
-cp -f /etc/skel/.bashrc.bak /etc/skel/.bashrc
+/bin/cp -n /etc/skel/.bashrc /etc/skel/.bashrc.bak
+/bin/cp -f /etc/skel/.bashrc.bak /etc/skel/.bashrc
 update_bashrc >> /etc/skel/.bashrc
 update_bash_aliases > /etc/skel/.bash_aliases
 echo -e "\n${BLD}${RED} Bash Environment Configured (skel) ${RESET}\n"
 
 
 # Configure SSH
-cp -n /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
+/bin/cp -n /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
 update_sshd_config >> /etc/ssh/sshd_config
 /etc/init.d/ssh restart
 echo -e "\n${BLD}${RED} SSH Configured ${RESET}\n"
 
 
 # Configure DNS
-cp -n /etc/hosts /etc/hosts.bak
-cp -f/etc/hosts.bak /etc/hosts
+/bin/cp -n /etc/hosts /etc/hosts.bak
+/bin/cp -f/etc/hosts.bak /etc/hosts
 update_hosts >> /etc/hosts
 AEGIR_HOST=`uname -n`
 echo -e "\n${BLD}${RED} DNS Configured ${RESET}\n"
@@ -324,8 +344,8 @@ echo -e "\n${BLD}${RED} Apache Configured ${RESET}\n"
 
 
 # Configure Sudo
-cp -n /etc/sudoers /etc/sudoers.bak
-cp -f /etc/sudoers.bak /etc/sudoers
+/bin/cp -n /etc/sudoers /etc/sudoers.bak
+/bin/cp -f /etc/sudoers.bak /etc/sudoers
 update_sudoers >> /etc/sudoers
 echo -e "\n${BLD}${RED} Sudo Configured ${RESET}\n"
 
@@ -342,7 +362,7 @@ su -s /bin/bash aegir -c 'cd /var/aegir && /var/aegir/drush/drush dl provision-6
 
 
 # Configure Aegir Make
-cp -n /var/aegir/.drush/provision/aegir.make /var/aegir/.drush/provision/aegir.make.bak
+/bin/cp -n /var/aegir/.drush/provision/aegir.make /var/aegir/.drush/provision/aegir.make.bak
 update_aegir_make > /var/aegir/.drush/provision/aegir.make
 echo -e "\n${BLD}${RED} Aegir Make Configured ${RESET}\n"
 
