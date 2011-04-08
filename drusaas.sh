@@ -174,27 +174,27 @@ _EOF_
 
 
 function setup_gitconfig {
-        cat > /home/$username/.gitconfig << _EOF_
-        [user]
-            name = $fullname
-            email = $email
-        [log]
-            decorate = full
-        [color]
-            ui = auto
-            status = auto
-            branch = auto
-            interactive = auto
-            diff = auto
-        [pager]
-            show-branch = true
-        [format]
-            numbered = auto
-        [core]
-            legacyheaders = false
-            excludesfile = /home/$username/.gitignore
-        [alias]
-            lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+cat > /home/$username/.gitconfig << _EOF_
+[user]
+  name = $fullname
+  email = $email
+[log]
+decorate = full
+[color]
+  ui = auto
+  status = auto
+  branch = auto
+  interactive = auto
+  diff = auto
+[pager]
+  show-branch = true
+[format]
+  numbered = auto
+[core]
+  legacyheaders = false
+  excludesfile = /home/$username/.gitignore
+[alias]
+  lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
 _EOF_
 }
 
@@ -209,11 +209,11 @@ read -p "Enter hostname: " newhostname
 
 
 # Install Packages
-aptitude update
-aptitude full-upgrade -y
-aptitude install -y apache2 php5 php5-cli php5-gd php5-mysql mysql-server landscape-common
-aptitude install -y postfix sudo rsync git-core unzip wget bash-completion
-aptitude install -y update-notifier-common
+#aptitude update
+#aptitude full-upgrade -y
+#aptitude install -y apache2 php5 php5-cli php5-gd php5-mysql mysql-server landscape-common
+#aptitude install -y postfix sudo rsync bash-completion git-core git-completion
+#aptitude install -y update-notifier-common unzip wget
 echo -e "\n${BLD}${RED} Packages Installed ${RESET}\n"
 
 
@@ -264,22 +264,22 @@ echo -e "\n${BLD}${RED} Aegir User Created ${RESET}\n"
 
 # Create Pearance Support User
 if [ $(id -u) -eq 0 ]; then
-    read -s -p "Enter password for support account: " password
-    echo -e "\n"
-    egrep "^support" /etc/passwd >/dev/null
-    if [ $? -eq 0 ]; then
-        echo -e "\nPearance support account already exists!"
-    else
-        pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
-        useradd -m -p $pass -s /bin/bash support
-        usermod -G www-data,aegir,sudo support
-        setup_gitconfig support support@pearance.com Pearance
-        chown support.support /home/support/.gitconfig
+  read -s -p "Enter password for support account: " password
+  echo -e "\n"
+  egrep "^support" /etc/passwd >/dev/null
+  if [ $? -eq 0 ]; then
+      echo -e "\nPearance support account already exists!"
+  else
+    pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
+    useradd -m -p $pass -s /bin/bash support
+    usermod -G www-data,aegir,sudo support
+    setup_gitconfig support "support@pearance.com" "Pearance Support"
+    chown support.support /home/support/.gitconfig
 
-        [ $? -eq 0 ] && echo -e "\n${BLD}${RED}Pearance Support User Created ${RESET}\n" || echo -e "\nFailed to add support account!"
-    fi
+    [ $? -eq 0 ] && echo -e "\n${BLD}${RED}Pearance Support User Created ${RESET}\n" || echo -e "\nFailed to add support account!"
+  fi
 else
-    echo -e "\nOnly root may add a user to the system\n"
+  echo -e "\nOnly root may add a user to the system\n"
 fi
 
 
@@ -288,7 +288,7 @@ echo -n -e "\nDo you want to add another user? [y/n] "
 read -N 1 REPLY
 if test "$REPLY" = "y" -o "$REPLY" = "Y"; then
   if [ $(id -u) -eq 0 ]; then
-    echo
+    echo -e "\n"
     read -p "Enter username : " username
     read -s -p "Enter password : " password
     echo -e "\n"
@@ -304,7 +304,7 @@ if test "$REPLY" = "y" -o "$REPLY" = "Y"; then
         usermod -G www-data,aegir,sudo $username
         setup_gitconfig $username $email $fullname
         chown $username.$username /home/$username/.gitconfig
-        [ $? -eq 0 ] && echo -e "\nUser $username has been added to system!" || echo -e "\nFailed to add another user!"
+        [ $? -eq 0 ] && echo -e "\n${BLD}${RED}Created Account $username ${RESET}\n" || echo -e "\nFailed to add another user!"
     fi
   else
     echo -e "\nOnly root may add a user to the system"
