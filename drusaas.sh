@@ -198,7 +198,7 @@ cat > /home/$username/.gitconfig << _EOF_
 #######################
 
 [user]
-  name = $3
+  name = $3 $4
   email = $2
 [log]
 decorate = full
@@ -298,7 +298,7 @@ if [ $(id -u) -eq 0 ]; then
     pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
     useradd -m -p $pass -s /bin/bash support
     usermod -G www-data,aegir,sudo support
-    setup_gitconfig "support" "support@pearance.com" "Pearance Support"
+    setup_gitconfig "support" "support@pearance.com" "Pearance" "Support"
     chown support.support /home/support/.gitconfig
 
     [ $? -eq 0 ] && echo -e "\n${BLD}${RED} Create Support Account ${BLD}${GREEN}| Done!${RESET}\n" || echo -e "\nFailed to add support account!"
@@ -315,7 +315,8 @@ if test "$REPLY" = "y" -o "$REPLY" = "Y"; then
   if [ $(id -u) -eq 0 ]; then
     read -p     "\nEnter username : " username
     read -p -s  "\nEnter password : " password
-    read -p     "\nEnter full name : " fullname
+    read -p     "\nEnter firstname : " firstname
+    read -p     "\nEnter lastname : " lastname
     read -p     "\nEnter email address : " email
     egrep "^$username" /etc/passwd >/dev/null
 
@@ -325,7 +326,7 @@ if test "$REPLY" = "y" -o "$REPLY" = "Y"; then
         pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
         useradd -m -p $pass -s /bin/bash $username
         usermod -G www-data,aegir,sudo $username
-        setup_gitconfig $username $email $fullname
+        setup_gitconfig $username $email $firsname $lastname
         chown $username.$username /home/$username/.gitconfig
         [ $? -eq 0 ] && echo -e "\n${BLD}${RED} Create Additional Account $username ${BLD}${GREEN}| Done!${RESET}\n" || echo -e "\nFailed to add another user!"
     fi
