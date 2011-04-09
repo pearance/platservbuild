@@ -78,7 +78,7 @@ _EOF_
 
 
 function update_bash_aliases {
-cat <<-\ _EOF_
+cat <<\_EOF_
 
 #######################
 # PEARANCE AMMENDMENT #
@@ -316,13 +316,13 @@ if test "$REPLY" = "y" -o "$REPLY" = "Y"; then
   if [ $(id -u) -eq 0 ]; then
     echo -e "\n"
     read -p "Enter username : " username
-    echo
+    echo -e "\n"
     read -s -p "Enter password : " password
     echo -e "\n"
     read -p "Enter firstname : " firstname
-    echo
+    echo -e "\n"
     read -p "Enter lastname : " lastname
-    echo
+    echo -e "\n"
     read -p "Enter email address : " email
     egrep "^$username" /etc/passwd >/dev/null
 
