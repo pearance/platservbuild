@@ -229,10 +229,12 @@ clear
 echo
 read -p "Enter hostname: " newhostname
 
-
-# Install Packages
+# Update System
 #aptitude update
 #aptitude full-upgrade -y
+echo -e "\n${BLD}${RED} Update System ${BLD}${GREEN}| Done!${RESET}\n"
+
+# Install Packages
 aptitude install -y apache2 php5 php5-cli php5-gd php5-mysql mysql-server landscape-common
 aptitude install -y postfix sudo rsync bash-completion git-core git-completion
 aptitude install -y update-notifier-common unzip wget
@@ -289,7 +291,6 @@ echo -e "\n${BLD}${RED} Create Aegir Account ${BLD}${GREEN}| Done!${RESET}\n"
 # Create Support Account
 if [ $(id -u) -eq 0 ]; then
   read -s -p "Enter password for support account: " password
-  echo -e "\n"
   egrep "^support" /etc/passwd >/dev/null
   if [ $? -eq 0 ]; then
       echo -e "\nPearance support account already exists!"
@@ -312,12 +313,10 @@ echo -n -e "\nDo you want to add another user? [y/n] "
 read -N 1 REPLY
 if test "$REPLY" = "y" -o "$REPLY" = "Y"; then
   if [ $(id -u) -eq 0 ]; then
-    echo -e "\n"
-    read -p "Enter username : " username
-    read -s -p "Enter password : " password
-    echo -e "\n"
-    read -p "Enter full name : " fullname
-    read -p "Enter email address : " email
+    read -p     "\nEnter username : " username
+    read -p -s  "\nEnter password : " password
+    read -p     "\nEnter full name : " fullname
+    read -p     "\nEnter email address : " email
     egrep "^$username" /etc/passwd >/dev/null
 
     if [ $? -eq 0 ]; then
