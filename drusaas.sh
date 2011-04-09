@@ -78,7 +78,7 @@ _EOF_
 
 
 function update_bash_aliases {
-cat <<- '_EOF_'
+cat <<-\ _EOF_
 
 #######################
 # PEARANCE AMMENDMENT #
@@ -192,7 +192,7 @@ _EOF_
 
 
 function setup_gitconfig {
-cat > /home/$username/.gitconfig << _EOF_
+cat > /home/$1/.gitconfig << _EOF_
 #######################
 # PEARANCE AMMENDMENT #
 #######################
@@ -291,6 +291,7 @@ echo -e "\n${BLD}${RED} Create Aegir Account ${BLD}${GREEN}| Done!${RESET}\n"
 # Create Support Account
 if [ $(id -u) -eq 0 ]; then
   read -s -p "Enter password for support account: " password
+  echo -e "\n"
   egrep "^support" /etc/passwd >/dev/null
   if [ $? -eq 0 ]; then
       echo -e "\nPearance support account already exists!"
@@ -313,11 +314,11 @@ echo -n -e "\nDo you want to add another user? [y/n] "
 read -N 1 REPLY
 if test "$REPLY" = "y" -o "$REPLY" = "Y"; then
   if [ $(id -u) -eq 0 ]; then
-    echo
+    echo -e "\n"
     read -p "Enter username : " username
     echo
     read -s -p "Enter password : " password
-    echo
+    echo -e "\n"
     read -p "Enter firstname : " firstname
     echo
     read -p "Enter lastname : " lastname
