@@ -78,7 +78,7 @@ _EOF_
 
 
 function update_bash_aliases {
-cat <<- _EOF_
+cat <<- "_EOF_"
 
 #######################
 # PEARANCE AMMENDMENT #
@@ -236,13 +236,13 @@ read -p "Enter hostname: " newhostname
 #aptitude install -y apache2 php5 php5-cli php5-gd php5-mysql mysql-server landscape-common
 #aptitude install -y postfix sudo rsync bash-completion git-core git-completion
 #aptitude install -y update-notifier-common unzip wget
-echo -e "\n${BLD}${RED} Packages Installed ${RESET}\n"
+echo -e "\n${BLD}${RED} Install Packages ${BLD}${GREEN}| Done!${RESET}\n"
 
 
 # Update Hostname
 echo $newhostname > /etc/hostname
 hostname -F /etc/hostname
-echo -e "\n${BLD}${RED} Hostname Updated ${RESET}\n"
+echo -e "\n${BLD}${RED} Update Hostname ${BLD}${GREEN}| Done!${RESET}\n"
 
 
 # Configure Bash Environment (root)
@@ -253,7 +253,7 @@ update_bashrc >> ~/.bashrc
 update_bash_aliases > ~/.bash_aliases
 source ~/.bashrc
 source ~/.bash_aliases
-echo -e "\n${BLD}${RED} Bash Environment Configured (root) ${RESET}\n"
+echo -e "\n${BLD}${RED} Configure Bash Environment (root) ${BLD}${GREEN}| Done!${RESET}\n"
 
 
 # Configure Bash Environment (skel)
@@ -261,31 +261,32 @@ echo -e "\n${BLD}${RED} Bash Environment Configured (root) ${RESET}\n"
 /bin/cp -f /etc/skel/.bashrc.bak /etc/skel/.bashrc
 update_bashrc >> /etc/skel/.bashrc
 update_bash_aliases > /etc/skel/.bash_aliases
-echo -e "\n${BLD}${RED} Bash Environment Configured (skel) ${RESET}\n"
+echo -e "\n${BLD}${RED} Configure Bash Environment (skel) ${BLD}${GREEN}| Done!${RESET}\n"
 
 
 # Configure SSH
 /bin/cp -n /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
+/bin/cp -f /etc/ssh/sshd_config.bak /etc/ssh/sshd_config
 update_sshd_config >> /etc/ssh/sshd_config
 /etc/init.d/ssh restart
-echo -e "\n${BLD}${RED} SSH Configured ${RESET}\n"
+echo -e "\n${BLD}${RED} Configure SSH ${BLD}${GREEN}| Done!${RESET}\n"
 
 
 # Configure DNS
 /bin/cp -n /etc/hosts /etc/hosts.bak
-/bin/cp -f/etc/hosts.bak /etc/hosts
+/bin/cp -f /etc/hosts.bak /etc/hosts
 update_hosts >> /etc/hosts
 AEGIR_HOST=`uname -n`
-echo -e "\n${BLD}${RED} DNS Configured ${RESET}\n"
+echo -e "\n${BLD}${RED} Configure DNS ${BLD}${GREEN}| Done!${RESET}\n"
 
 
-# Create Aegir User
+# Create Aegir Account
 adduser --system --group --home /var/aegir aegir
 adduser aegir www-data
-echo -e "\n${BLD}${RED} Aegir User Created ${RESET}\n"
+echo -e "\n${BLD}${RED} Create Aegir Account ${BLD}${GREEN}| Done!${RESET}\n"
 
 
-# Create Pearance Support User
+# Create Support Account
 if [ $(id -u) -eq 0 ]; then
   read -s -p "Enter password for support account: " password
   echo -e "\n"
@@ -299,14 +300,14 @@ if [ $(id -u) -eq 0 ]; then
     setup_gitconfig support "support@pearance.com" "Pearance Support"
     chown support.support /home/support/.gitconfig
 
-    [ $? -eq 0 ] && echo -e "\n${BLD}${RED}Pearance Support User Created ${RESET}\n" || echo -e "\nFailed to add support account!"
+    [ $? -eq 0 ] && echo -e "\n${BLD}${RED} Create Support Account ${BLD}${GREEN}| Done!${RESET}\n" || echo -e "\nFailed to add support account!"
   fi
 else
   echo -e "\nOnly root may add a user to the system\n"
 fi
 
 
-# Create Additional User Account
+# Create Additional Account
 echo -n -e "\nDo you want to add another user? [y/n] "
 read -N 1 REPLY
 if test "$REPLY" = "y" -o "$REPLY" = "Y"; then
@@ -327,7 +328,7 @@ if test "$REPLY" = "y" -o "$REPLY" = "Y"; then
         usermod -G www-data,aegir,sudo $username
         setup_gitconfig $username $email $fullname
         chown $username.$username /home/$username/.gitconfig
-        [ $? -eq 0 ] && echo -e "\n${BLD}${RED}Created Account $username ${RESET}\n" || echo -e "\nFailed to add another user!"
+        [ $? -eq 0 ] && echo -e "\n${BLD}${RED} Create Additional Account $username ${BLD}${GREEN}| Done!${RESET}\n" || echo -e "\nFailed to add another user!"
     fi
   else
     echo -e "\nOnly root may add a user to the system"
@@ -340,34 +341,35 @@ fi
 # Configure Apache
 a2enmod rewrite
 ln -s /var/aegir/config/apache.conf /etc/apache2/conf.d/aegir.conf
-echo -e "\n${BLD}${RED} Apache Configured ${RESET}\n"
+echo -e "\n${BLD}${RED} Configure Apache ${BLD}${GREEN}| Done!${RESET}\n"
 
 
 # Configure Sudo
 /bin/cp -n /etc/sudoers /etc/sudoers.bak
 /bin/cp -f /etc/sudoers.bak /etc/sudoers
 update_sudoers >> /etc/sudoers
-echo -e "\n${BLD}${RED} Sudo Configured ${RESET}\n"
+echo -e "\n${BLD}${RED} Configure Sudo ${BLD}${GREEN}| Done!${RESET}\n"
 
 
 # Install Drush
 su -s /bin/bash aegir -c 'cd /var/aegir && git clone --branch master http://git.drupal.org/project/drush.git'
 su -s /bin/bash aegir -c 'cd /var/aegir/drush && git checkout 7.x-4.4'
-echo -e "\n${BLD}${RED} Drush Installed ${RESET}\n"
+echo -e "\n${BLD}${RED} Install Drush ${BLD}${GREEN}| Done!${RESET}\n"
 
 
 # Install Provision
 # Be sure to modify for the latest release
 su -s /bin/bash aegir -c 'cd /var/aegir && /var/aegir/drush/drush dl provision-6.x-1.0-rc3'
+echo -e "\n${BLD}${RED} Install Provision ${BLD}${GREEN}| Done!${RESET}\n"
 
 
 # Configure Aegir Make
 /bin/cp -n /var/aegir/.drush/provision/aegir.make /var/aegir/.drush/provision/aegir.make.bak
 update_aegir_make > /var/aegir/.drush/provision/aegir.make
-echo -e "\n${BLD}${RED} Aegir Make Configured ${RESET}\n"
+echo -e "\n${BLD}${RED} Configure Aegir Make ${BLD}${GREEN}| Done!${RESET}\n"
 
 
 # Install SaaS Hostmaster
 su -s /bin/bash aegir -c 'cd /var/aegir && /var/aegir/drush/drush hostmaster-install'
-echo -e "\n${BLD}${RED} SaaS Hostmaster Installed! ${RESET}\n"
+echo -e "\n${BLD}${RED} Install SaaS Hostmaster ${BLD}${GREEN}| Done!${RESET}\n"
 
