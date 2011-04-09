@@ -78,7 +78,7 @@ _EOF_
 
 
 function update_bash_aliases {
-cat <<- "_EOF_"
+cat <<- '_EOF_'
 
 #######################
 # PEARANCE AMMENDMENT #
