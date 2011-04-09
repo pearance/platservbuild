@@ -198,8 +198,8 @@ cat > /home/$username/.gitconfig << _EOF_
 #######################
 
 [user]
-  name = $fullname
-  email = $email
+  name = $3
+  email = $2
 [log]
 decorate = full
 [color]
@@ -214,7 +214,7 @@ decorate = full
   numbered = auto
 [core]
   legacyheaders = false
-  excludesfile = /home/$username/.gitignore
+  excludesfile = /home/$1/.gitignore
 [alias]
   lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
 _EOF_
@@ -233,9 +233,9 @@ read -p "Enter hostname: " newhostname
 # Install Packages
 #aptitude update
 #aptitude full-upgrade -y
-#aptitude install -y apache2 php5 php5-cli php5-gd php5-mysql mysql-server landscape-common
-#aptitude install -y postfix sudo rsync bash-completion git-core git-completion
-#aptitude install -y update-notifier-common unzip wget
+aptitude install -y apache2 php5 php5-cli php5-gd php5-mysql mysql-server landscape-common
+aptitude install -y postfix sudo rsync bash-completion git-core git-completion
+aptitude install -y update-notifier-common unzip wget
 echo -e "\n${BLD}${RED} Install Packages ${BLD}${GREEN}| Done!${RESET}\n"
 
 
@@ -297,7 +297,7 @@ if [ $(id -u) -eq 0 ]; then
     pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
     useradd -m -p $pass -s /bin/bash support
     usermod -G www-data,aegir,sudo support
-    setup_gitconfig support "support@pearance.com" "Pearance Support"
+    setup_gitconfig "support" "support@pearance.com" "Pearance Support"
     chown support.support /home/support/.gitconfig
 
     [ $? -eq 0 ] && echo -e "\n${BLD}${RED} Create Support Account ${BLD}${GREEN}| Done!${RESET}\n" || echo -e "\nFailed to add support account!"
