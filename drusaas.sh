@@ -192,7 +192,7 @@ _EOF_
 
 
 function setup_gitconfig {
-cat > /home/$username/.gitconfig << _EOF_
+cat > /home/$1/.gitconfig << _EOF_
 #######################
 # PEARANCE AMMENDMENT #
 #######################
@@ -313,15 +313,15 @@ echo -n -e "\nDo you want to add another user? [y/n] "
 read -N 1 REPLY
 if test "$REPLY" = "y" -o "$REPLY" = "Y"; then
   if [ $(id -u) -eq 0 ]; then
-    echo
+    echo -e "\n"
     read -p "Enter username : " username
-    echo
+    echo -e "\n"
     read -s -p "Enter password : " password
-    echo
+    echo -e "\n"
     read -p "Enter firstname : " firstname
-    echo
+    echo -e "\n"
     read -p "Enter lastname : " lastname
-    echo
+    echo -e "\n"
     read -p "Enter email address : " email
     egrep "^$username" /etc/passwd >/dev/null
 
