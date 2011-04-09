@@ -313,6 +313,7 @@ echo -n -e "\nDo you want to add another user? [y/n] "
 read -N 1 REPLY
 if test "$REPLY" = "y" -o "$REPLY" = "Y"; then
   if [ $(id -u) -eq 0 ]; then
+<<<<<<< HEAD
     echo
     read -p "Enter username : " username
     echo
@@ -323,6 +324,17 @@ if test "$REPLY" = "y" -o "$REPLY" = "Y"; then
     read -p "Enter lastname : " lastname
     echo
     read -p "Enter email address : " email
+=======
+    read -p     "Enter username : " username
+    echo
+    read -p -s  "Enter password : " password
+    echo
+    read -p     "Enter firstname : " firstname
+    echo
+    read -p     "Enter lastname : " lastname
+    echo
+    read -p     "Enter email address : " email
+>>>>>>> f4603560f86ac1f6d64920761c9796a1bc6b41b6
     egrep "^$username" /etc/passwd >/dev/null
 
     if [ $? -eq 0 ]; then
