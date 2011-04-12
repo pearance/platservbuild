@@ -373,7 +373,7 @@ echo -e "\n${BLD}${RED} Configure DNS ${BLD}${GREEN}| Done!${RESET}\n"
 
 
 # Create Aegir Account
-adduser --system --group --home /var/aegir aegir
+adduser --system --group --home /srv/aegir aegir
 adduser aegir www-data
 echo -e "\n${BLD}${RED} Create Aegir Account ${BLD}${GREEN}| Done!${RESET}\n"
 
@@ -406,13 +406,13 @@ if test "$REPLY" = "y" -o "$REPLY" = "Y"; then
   if [ $(id -u) -eq 0 ]; then
     echo -e "\n"
     read -p "Enter username : " username
-    echo -e "\n"
+    echo
     read -s -p "Enter password : " password
     echo -e "\n"
     read -p "Enter firstname : " firstname
-    echo -e "\n"
+    echo
     read -p "Enter lastname : " lastname
-    echo -e "\n"
+    echo
     read -p "Enter email address : " email
     egrep "^$username" /etc/passwd >/dev/null
 
@@ -436,7 +436,7 @@ fi
 
 # Configure Apache
 a2enmod rewrite
-ln -s /var/aegir/config/apache.conf /etc/apache2/conf.d/aegir.conf
+ln -s /srv/aegir/config/apache.conf /etc/apache2/conf.d/aegir.conf
 echo -e "\n${BLD}${RED} Configure Apache ${BLD}${GREEN}| Done!${RESET}\n"
 
 
@@ -448,24 +448,23 @@ echo -e "\n${BLD}${RED} Configure Sudo ${BLD}${GREEN}| Done!${RESET}\n"
 
 
 # Install Drush
-su -s /bin/bash aegir -c 'cd /var/aegir && git clone --branch master http://git.drupal.org/project/drush.git'
-su -s /bin/bash aegir -c 'cd /var/aegir/drush && git checkout 7.x-4.4'
+su -s /bin/bash aegir -c 'cd /srv/aegir && git clone --branch master http://git.drupal.org/project/drush.git'
+su -s /bin/bash aegir -c 'cd /srv/aegir/drush && git checkout 7.x-4.4'
 echo -e "\n${BLD}${RED} Install Drush ${BLD}${GREEN}| Done!${RESET}\n"
 
 
 # Install Provision
-# Be sure to modify for the latest release
-su -s /bin/bash aegir -c 'cd /var/aegir && /var/aegir/drush/drush dl provision-6.x-1.0-rc3'
+su -s /bin/bash aegir -c 'cd /srv/aegir && /srv/aegir/drush/drush dl --destination=/srv/aegir/.drush provision-6.x'
 echo -e "\n${BLD}${RED} Install Provision ${BLD}${GREEN}| Done!${RESET}\n"
 
 
 # Configure Aegir Make
-/bin/cp -n /var/aegir/.drush/provision/aegir.make /var/aegir/.drush/provision/aegir.make.bak
-update_aegir_make > /var/aegir/.drush/provision/aegir.make
+/bin/cp -n /srv/aegir/.drush/provision/aegir.make /srv/aegir/.drush/provision/aegir.make.bak
+update_aegir_make > /srv/aegir/.drush/provision/aegir.make
 echo -e "\n${BLD}${RED} Configure Aegir Make ${BLD}${GREEN}| Done!${RESET}\n"
 
 
 # Install SaaS Hostmaster
-su -s /bin/bash aegir -c 'cd /var/aegir && /var/aegir/drush/drush hostmaster-install'
+su -s /bin/bash aegir -c 'cd /srv/aegir && /srv/aegir/drush/drush hostmaster-install'
 echo -e "\n${BLD}${RED} Install SaaS Hostmaster ${BLD}${GREEN}| Done!${RESET}\n"
 
