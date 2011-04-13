@@ -18,7 +18,7 @@ RESET=$(tput sgr0)
 ###################################################################
 
 function update_bashrc {
-cat <<- _EOF_
+cat <<-\_EOF_
 
 #######################
 # PEARANCE AMMENDMENT #
@@ -212,6 +212,11 @@ core = 6.x
 api = 2
 projects[drupal][type] = "core"
 
+projects[hostmaster][type] = "profile"
+projects[hostmaster][download][type] = "git"
+projects[hostmaster][download][url] = "http://git.drupal.org/project/hostmaster.git"
+; projects[hostmaster][download][url] = "git://github.com/Pearance/hostmaster.git"
+projects[hostmaster][download][tag] = "6.x-1.0-rc7"
 
 ; Dev modules
 projects[devel][version] = "1.23"
@@ -300,13 +305,6 @@ libraries[jquery_ui][download][type] = "get"
 libraries[jquery_ui][download][url] = "http://jquery-ui.googlecode.com/files/jquery.ui-1.6.zip"
 libraries[jquery_ui][directory_name] = "jquery.ui"
 libraries[jquery_ui][destination] = "modules/contrib/jquery_ui"
-
-
-projects[hostmaster][type] = "profile"
-projects[hostmaster][download][type] = "git"
-projects[hostmaster][download][url] = "http://git.drupal.org/project/hostmaster.git"
-; projects[hostmaster][download][url] = "git://github.com/Pearance/hostmaster.git"
-projects[hostmaster][download][tag] = "6.x-1.0-rc7"
 _EOF_
 }
 
