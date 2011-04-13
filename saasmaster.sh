@@ -210,8 +210,8 @@ cat <<- _EOF_
 ;#######################
 core = 6.x
 api = 2
-
 projects[drupal][type] = "core"
+
 
 ; Dev modules
 projects[devel][version] = "1.23"
@@ -222,7 +222,6 @@ projects[devel_themer][subdir] = "dev"
 
 projects[drupalforfirebug][version] = "1.4"
 projects[drupalforfirebug][subdir] = "dev"
-
 
 
 ; Contrib modules
@@ -281,12 +280,12 @@ projects[uc_optional_checkout_review][subdir] = "contrib"
 projects[uc_better_cart_links][type] = "module"
 projects[uc_better_cart_links][version] = "1.x-dev"
 projects[uc_better_cart_links][subdir] = "contrib"
-;projects[uc_better_cart_links][patch][] = "http://drupal.org/files/issues/uc-better-links-fix.patch" ; http://drupal.org/node/1090092#comment-4245384
+; projects[uc_better_cart_links][patch][] = "http://drupal.org/files/issues/uc-better-links-fix.patch"
+; http://drupal.org/node/1090092#comment-4245384
 
 projects[uc_hosting][type] = "module"
 projects[uc_hosting][version] = "1.0-beta1"
 projects[uc_hosting][subdir] = "contrib"
-
 
 
 ; Custom modules
@@ -296,17 +295,18 @@ projects[pearance_order][download][type] = "git"
 projects[pearance_order][download][url] = "git://github.com/Pearance/pearance_order.git"
 
 
-
 ; Libraries
 libraries[jquery_ui][download][type] = "get"
 libraries[jquery_ui][download][url] = "http://jquery-ui.googlecode.com/files/jquery.ui-1.6.zip"
 libraries[jquery_ui][directory_name] = "jquery.ui"
 libraries[jquery_ui][destination] = "modules/contrib/jquery_ui"
 
+
 projects[hostmaster][type] = "profile"
-projects[hostmaster][download][type]  = "git"
-projects[hostmaster][download][url] = "git://github.com/Pearance/hostmaster.git"
-;projects[hostmaster][download][tag] = "Master"
+projects[hostmaster][download][type] = "git"
+projects[hostmaster][download][url] = "http://git.drupal.org/project/hostmaster.git"
+; projects[hostmaster][download][url] = "git://github.com/Pearance/hostmaster.git"
+projects[hostmaster][download][tag] = "6.x-1.0-rc7"
 _EOF_
 }
 
