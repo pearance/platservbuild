@@ -454,7 +454,7 @@ echo -e "\n${BLD}${RED} Install Drush ${BLD}${GREEN}| Done!${RESET}\n"
 
 
 # Install Provision
-su -s /bin/bash aegir -c 'cd /srv/aegir && /srv/aegir/drush/drush dl --destination=/srv/aegir/.drush provision-6.x'
+su -s /bin/bash aegir -c 'mkdir -p /srv/aegir/.drush && /srv/aegir/drush/drush dl --destination=/srv/aegir/.drush provision-6.x'
 echo -e "\n${BLD}${RED} Install Provision ${BLD}${GREEN}| Done!${RESET}\n"
 
 
