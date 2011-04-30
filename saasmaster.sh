@@ -234,8 +234,8 @@ read -p "Enter hostname: " newhostname
 echo -e "\n${BLD}${RED} Update System ${BLD}${GREEN}| Done!${RESET}\n"
 
 # Install Packages
-aptitude install -y apache2 php5 php5-cli php5-gd php5-mysql mysql-server landscape-common
-aptitude install -y postfix sudo rsync bash-completion git-core git-completion
+aptitude install -y apache2 php5 php5-cli php5-gd php5-mysql mysql-server phpmyadmin
+aptitude install -y landscape-common postfix sudo rsync bash-completion git-core git-completion
 aptitude install -y update-notifier-common unzip wget
 echo -e "\n${BLD}${RED} Install Packages ${BLD}${GREEN}| Done!${RESET}\n"
 
@@ -363,7 +363,8 @@ echo -e "\n${BLD}${RED} Install Drush ${BLD}${GREEN}| Done!${RESET}\n"
 
 
 # Install Provision
-su -s /bin/bash aegir -c 'mkdir -p /srv/aegir/.drush && /srv/aegir/drush/drush dl --destination=/srv/aegir/.drush provision-6.x-1.1'
+su -s /bin/bash aegir -c 'mkdir -p /srv/aegir/.drush'
+su -s /bin/bash aegir -c '/srv/aegir/drush/drush dl --destination=/srv/aegir/.drush provision-6.x-1.1'
 echo -e "\n${BLD}${RED} Install Provision ${BLD}${GREEN}| Done!${RESET}\n"
 
 
