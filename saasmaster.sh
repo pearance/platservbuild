@@ -215,7 +215,7 @@ projects[drupal][type] = "core"
 projects[hostmaster][type] = "profile"
 projects[hostmaster][download][type] = "git"
 projects[hostmaster][download][url] = "git://github.com/Pearance/hostmaster.git"
-; projects[hostmaster][download][tag] = "6.x-1.1.a"
+;projects[hostmaster][download][tag] = "6.x-1.1.a"
 _EOF_
 }
 
@@ -358,11 +358,12 @@ echo -e "\n${BLD}${RED} Configure Sudo ${BLD}${GREEN}| Done!${RESET}\n"
 
 # Install Drush
 su -s /bin/bash aegir -c 'cd /srv/aegir && git clone --branch master http://git.drupal.org/project/drush.git'
-su -s /bin/bash aegir -c 'cd /srv/aegir/drush && git checkout 7.x-4.4'
+su -s /bin/bash aegir -c 'cd /srv/aegir/drush && git checkout 7.x-4.x'
 echo -e "\n${BLD}${RED} Install Drush ${BLD}${GREEN}| Done!${RESET}\n"
 
 
 # Install Provision
+echo "bout to install provision"
 su -s /bin/bash aegir -c 'mkdir -p /srv/aegir/.drush && /srv/aegir/drush/drush dl --destination=/srv/aegir/.drush provision-6.x-1.1'
 echo -e "\n${BLD}${RED} Install Provision ${BLD}${GREEN}| Done!${RESET}\n"
 
