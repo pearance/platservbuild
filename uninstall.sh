@@ -8,5 +8,5 @@ userdel support --remove
 rm /etc/apache2/conf.d/aegir.conf
 
 rm saasmaster.sh
-curl -O https://github.com/Pearance/saasmaster/raw/master/saasmaster.sh && chmod 700 saas$
+curl -O https://github.com/Pearance/saasmaster/raw/master/saasmaster.sh && chmod 700 saasmaster.sh && . saasmaster.sh
 
