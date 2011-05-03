@@ -293,7 +293,7 @@ echo -e "\n${BLD}${RED} Configure DNS ${BLD}${GREEN}| Done!${RESET}\n"
 
 
 # Update mcrypt.ini
-update_mcrypt_ini >> /etc/php5/cli/conf.d/mcrypt.ini
+update_mcrypt_ini > /etc/php5/cli/conf.d/mcrypt.ini
 echo -e "\n${BLD}${RED} Update mcrypt.ini ${BLD}${GREEN}| Done!${RESET}\n"
 
 
