@@ -219,6 +219,17 @@ projects[hostmaster][download][url] = "git://github.com/Pearance/hostmaster.git"
 _EOF_
 }
 
+function update_mcrypt_ini {
+cat <<- _EOF_
+;#######################
+;# PEARANCE AMMENDMENT #
+;#######################
+
+; configuration for php MCrypt module
+extension=mcrypt.so
+_EOF_
+}
+
 
 # START SCRIPT
 ###################################################################
@@ -279,6 +290,11 @@ echo -e "\n${BLD}${RED} Configure SSH ${BLD}${GREEN}| Done!${RESET}\n"
 update_hosts >> /etc/hosts
 AEGIR_HOST=`uname -n`
 echo -e "\n${BLD}${RED} Configure DNS ${BLD}${GREEN}| Done!${RESET}\n"
+
+
+# Update mcrypt.ini
+update_mcrypt_ini >> /etc/php5/cli/conf.d/mcrypt.ini
+echo -e "\n${BLD}${RED} Update mcrypt.ini ${BLD}${GREEN}| Done!${RESET}\n"
 
 
 # Create Aegir Account
