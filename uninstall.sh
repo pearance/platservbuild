@@ -3,8 +3,8 @@
 clear
 rm -rf /srv/aegir
 crontab -r -u aegir
-userdel aegir
-userdel support
+userdel aegir --force --remove
+userdel support --force --remove
 rm /etc/apache2/conf.d/aegir.conf
 
 rm saasmaster.sh
