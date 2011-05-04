@@ -400,4 +400,5 @@ echo -e "\n${BLD}${RED} Install SaaS Hostmaster ${BLD}${GREEN}| Done!${RESET}\n"
   su -s /bin/bash aegir -c 'mkdir backups && cp uc_better_cart_links.module backups && cp uc_better_cart_links.pages.inc backups'
   su -s /bin/bash aegir -c 'wget "http://drupal.org/files/issues/uc-better-links-fix.patch"'
   su -s /bin/bash aegir -c 'git apply -v uc-better-links-fix.patch'
+  echo -e "\n${BLD}${RED} Patch uc_better_cart_links ${BLD}${GREEN}| Done!${RESET}\n"
 
