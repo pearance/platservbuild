@@ -394,3 +394,10 @@ echo -e "\n${BLD}${RED} Configure Aegir Make ${BLD}${GREEN}| Done!${RESET}\n"
 su -s /bin/bash aegir -c 'cd /srv/aegir && /srv/aegir/drush/drush hostmaster-install'
 echo -e "\n${BLD}${RED} Install SaaS Hostmaster ${BLD}${GREEN}| Done!${RESET}\n"
 
+  # Patch Modules
+  # uc_better_cart_links - http://drupal.org/node/1090092#comment-4245384
+  su -s /bin/bash aegir -c 'cd /srv/aegir/hostmaster-*/profiles/hostmaster/modules/contrib/uc_better_cart_links'
+  su -s /bin/bash aegir -c 'mkdir backups && cp uc_better_cart_links.module backups && cp uc_better_cart_links.pages.inc backups'
+  su -s /bin/bash aegir -c 'wget "http://drupal.org/files/issues/uc-better-links-fix.patch"'
+  su -s /bin/bash aegir -c 'git apply -v uc-better-links-fix.patch'
+
