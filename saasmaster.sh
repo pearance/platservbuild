@@ -373,13 +373,16 @@ echo -e "\n${BLD}${RED} Configure Sudo ${BLD}${GREEN}| Done!${RESET}\n"
 
 
 # Install Drush
-su -s /bin/bash aegir -c 'cd /srv/aegir && git clone --branch master http://git.drupal.org/project/drush.git'
-su -s /bin/bash aegir -c 'cd /srv/aegir/drush && git checkout 7.x-4.x'
+cd /srv/aegir
+su -s /bin/bash aegir -c 'git clone --branch master http://git.drupal.org/project/drush.git'
+cd drush
+su -s /bin/bash aegir -c 'git checkout 7.x-4.x'
 echo -e "\n${BLD}${RED} Install Drush ${BLD}${GREEN}| Done!${RESET}\n"
 
 
 # Install Provision
-su -s /bin/bash aegir -c 'cd /srv/aegir && mkdir .drush'
+cd /srv/aegir
+su -s /bin/bash aegir -c 'mkdir .drush'
 su -s /bin/bash aegir -c '/srv/aegir/drush/drush dl --destination=/srv/aegir/.drush provision-6.x-1.1'
 echo -e "\n${BLD}${RED} Install Provision ${BLD}${GREEN}| Done!${RESET}\n"
 
