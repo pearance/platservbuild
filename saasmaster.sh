@@ -245,9 +245,9 @@ aptitude full-upgrade -y
 echo -e "\n${BLD}${RED} Update System ${BLD}${GREEN}| Done!${RESET}\n"
 
 # Install Packages
-aptitude install -y apache2 php5 php5-cli php5-gd php5-mysql mysql-server phpmyadmin
-aptitude install -y landscape-common postfix sudo rsync bash-completion git-core git-completion
-aptitude install -y update-notifier-common wget
+aptitude install -y apache2 php5 php5-cli php5-gd php5-mysql mysql-server
+aptitude install -y phpmyadmin landscape-common postfix sudo rsync
+aptitude install -y bash-completion git-core git-completion update-notifier-common
 echo -e "\n${BLD}${RED} Install Packages ${BLD}${GREEN}| Done!${RESET}\n"
 
 
