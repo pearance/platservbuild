@@ -240,14 +240,14 @@ echo
 read -p "Enter hostname: " newhostname
 
 # Update System
-#aptitude update
-#aptitude full-upgrade -y
+aptitude update
+aptitude full-upgrade -y
 echo -e "\n${BLD}${RED} Update System ${BLD}${GREEN}| Done!${RESET}\n"
 
 # Install Packages
 aptitude install -y apache2 php5 php5-cli php5-gd php5-mysql mysql-server phpmyadmin
 aptitude install -y landscape-common postfix sudo rsync bash-completion git-core git-completion
-aptitude install -y update-notifier-common unzip wget
+aptitude install -y update-notifier-common wget
 echo -e "\n${BLD}${RED} Install Packages ${BLD}${GREEN}| Done!${RESET}\n"
 
 
@@ -383,7 +383,7 @@ echo -e "\n${BLD}${RED} Install Drush ${BLD}${GREEN}| Done!${RESET}\n"
 # Install Provision
 cd /srv/aegir
 su -s /bin/bash aegir -c 'mkdir .drush'
-su -s /bin/bash aegir -c '/srv/aegir/drush/drush dl --destination=/srv/aegir/.drush provision-6.x-1.1'
+su -s /bin/bash aegir -c '/srv/aegir/drush/drush dl --destination=/srv/aegir/.drush provision-6.x-1.4'
 echo -e "\n${BLD}${RED} Install Provision ${BLD}${GREEN}| Done!${RESET}\n"
 
 
@@ -399,9 +399,9 @@ echo -e "\n${BLD}${RED} Install SaaS Hostmaster ${BLD}${GREEN}| Done!${RESET}\n"
 
   # Patch Modules
   # uc_better_cart_links - http://drupal.org/node/1090092#comment-4245384
-  cd /srv/aegir/hostmaster-*/profiles/hostmaster/modules/contrib/uc_better_cart_links
-  mkdir backups && cp uc_better_cart_links.module backups && cp uc_better_cart_links.pages.inc backups
-  su -s /bin/bash aegir -c 'wget "http://drupal.org/files/issues/uc-better-links-fix.patch"'
-  su -s /bin/bash aegir -c 'git apply -v uc-better-links-fix.patch'
-  echo -e "\n${BLD}${RED} Patch uc_better_cart_links ${BLD}${GREEN}| Done!${RESET}\n"
+  # cd /srv/aegir/hostmaster-*/profiles/hostmaster/modules/contrib/uc_better_cart_links
+  # mkdir backups && cp uc_better_cart_links.module backups && cp uc_better_cart_links.pages.inc backups
+  # su -s /bin/bash aegir -c 'wget "http://drupal.org/files/issues/uc-better-links-fix.patch"'
+  # su -s /bin/bash aegir -c 'git apply -v uc-better-links-fix.patch'
+  # echo -e "\n${BLD}${RED} Patch uc_better_cart_links ${BLD}${GREEN}| Done!${RESET}\n"
 
