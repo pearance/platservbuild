@@ -17,124 +17,6 @@ RESET=$(tput sgr0)
 # DEFINE FUNCTIONS
 ###################################################################
 
-function update_bashrc {
-cat <<-\_EOF_
-
-#######################
-# PEARANCE AMMENDMENT #
-#######################
-
-# enable bash completion in interactive shells
-if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
-    . /etc/bash_completion
-fi
-
-# VARIABLES
-##################################################################
-
-txtblk='\e[0;30m' # Black - Regular
-txtred='\e[0;31m' # Red
-txtgrn='\e[0;32m' # Green
-txtylw='\e[0;33m' # Yellow
-txtblu='\e[0;34m' # Blue
-txtpur='\e[0;35m' # Purple
-txtcyn='\e[0;36m' # Cyan
-txtwht='\e[0;37m' # White
-bldblk='\e[1;30m' # Black - Bold
-bldred='\e[1;31m' # Red
-bldgrn='\e[1;32m' # Green
-bldylw='\e[1;33m' # Yellow
-bldblu='\e[1;34m' # Blue
-bldpur='\e[1;35m' # Purple
-bldcyn='\e[1;36m' # Cyan
-bldwht='\e[1;37m' # White
-unkblk='\e[4;30m' # Black - Underline
-undred='\e[4;31m' # Red
-undgrn='\e[4;32m' # Green
-undylw='\e[4;33m' # Yellow
-undblu='\e[4;34m' # Blue
-undpur='\e[4;35m' # Purple
-undcyn='\e[4;36m' # Cyan
-undwht='\e[4;37m' # White
-bakblk='\e[40m'   # Black - Background
-bakred='\e[41m'   # Red
-badgrn='\e[42m'   # Green
-bakylw='\e[43m'   # Yellow
-bakblu='\e[44m'   # Blue
-bakpur='\e[45m'   # Purple
-bakcyn='\e[46m'   # Cyan
-bakwht='\e[47m'   # White
-txtrst='\e[0m'    # Text Reset
-
-
-# PROMPT
-##################################################################
-
-# Set git autocompletion and PS1 integration
-GIT_PS1_SHOWDIRTYSTATE=true
-PS1="\n$bldgrn[$txtylw\u$bldgrn@$bldylw\H$bldgrn]$bldylw \w > $bldred\$(__git_ps1)\n$bldylw\\$ "
-_EOF_
-}
-
-
-function update_bash_aliases {
-cat <<\_EOF_
-
-#######################
-# PEARANCE AMMENDMENT #
-#######################
-
-# ALIASES
-##################################################################
-
-# COMMANDS (IMPROVED WITH FLAGS)
-alias rm='rm -if'
-alias cp='cp -i'
-alias mv='mv -i'
-alias ra='rm -r * .*'
-alias df='df -h'
-alias du='du -sh'
-alias less='less -r'
-alias whence='type -a'
-alias grep='grep --color'
-alias tarx='tar -xzf'
-alias tarc='tar -zcf'
-
-# NAVIGATION
-alias ls='ls -hF --color --group-directories-first'
-alias ll='clear && ls -hFlX --color  --group-directories-first'
-alias la='clear && ls -hFlXa --color --group-directories-first'
-alias ..='cd ..'
-alias tt='tree -C'
-alias td='tree -dC'
-
-# APACHE
-alias lsa='ll /etc/apache2/sites-available'
-alias lma='ll /etc/apache2/mods-available'
-alias lse='ll /etc/apache2/sites-enabled'
-alias lme='ll /etc/apache2/mods-enabled'
-alias sa='cd /etc/apache2/sites-available && ll'
-alias ma='cd /etc/apache2/mods-available && ll'
-alias se='cd /etc/apache2/sites-enabled && ll'
-alias me='cd /etc/apache2/mods-enabled && ll'
-
-# GIT
-alias gitsh='git.sh'
-
-# DRUSH
-alias ddl='d dl --package-handler="git_drupalorg"'
-
-
-# FUNCTIONS
-##################################################################
-
-function a2 {
-  sudo service apache2 $1
-}
-_EOF_
-}
-
-
 function update_hosts {
 AEGIR_HOST=`uname -n`
 IP=`ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'`
@@ -173,35 +55,6 @@ _EOF_
 }
 
 
-function setup_gitconfig {
-cat > /home/$1/.gitconfig << _EOF_
-#######################
-# PEARANCE AMMENDMENT #
-#######################
-
-[user]
-  name = $3 $4
-  email = $2
-[log]
-decorate = full
-[color]
-  ui = auto
-  status = auto
-  branch = auto
-  interactive = auto
-  diff = auto
-[pager]
-  show-branch = true
-[format]
-  numbered = auto
-[core]
-  legacyheaders = false
-  excludesfile = /home/$1/.gitignore
-[alias]
-  lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
-_EOF_
-}
-
 
 function update_aegir_make {
 cat <<- _EOF_
@@ -239,10 +92,14 @@ clear
 echo
 read -p "Enter hostname: " newhostname
 
+
+
 # Update System
 aptitude update
 aptitude full-upgrade -y
 echo -e "\n${BLD}${RED} Update System ${BLD}${GREEN}| Done!${RESET}\n"
+
+
 
 # Install Packages
 aptitude install -y apache2 php5 php5-cli php5-gd php5-mysql mysql-server
@@ -251,29 +108,12 @@ aptitude install -y bash-completion git-core git-completion update-notifier-comm
 echo -e "\n${BLD}${RED} Install Packages ${BLD}${GREEN}| Done!${RESET}\n"
 
 
+
 # Update Hostname
 echo $newhostname > /etc/hostname
 hostname -F /etc/hostname
 echo -e "\n${BLD}${RED} Update Hostname ${BLD}${GREEN}| Done!${RESET}\n"
 
-
-# Configure Bash Environment (root)
-/bin/cp -n ~/.bashrc ~/.bashrc.bak
-/bin/cp -f ~/.bashrc.bak ~/.bashrc
-
-update_bashrc >> ~/.bashrc
-update_bash_aliases > ~/.bash_aliases
-source ~/.bashrc
-source ~/.bash_aliases
-echo -e "\n${BLD}${RED} Configure Bash Environment (root) ${BLD}${GREEN}| Done!${RESET}\n"
-
-
-# Configure Bash Environment (skel)
-/bin/cp -n /etc/skel/.bashrc /etc/skel/.bashrc.bak
-/bin/cp -f /etc/skel/.bashrc.bak /etc/skel/.bashrc
-update_bashrc >> /etc/skel/.bashrc
-update_bash_aliases > /etc/skel/.bash_aliases
-echo -e "\n${BLD}${RED} Configure Bash Environment (skel) ${BLD}${GREEN}| Done!${RESET}\n"
 
 
 # Configure SSH
@@ -284,6 +124,7 @@ update_sshd_config >> /etc/ssh/sshd_config
 echo -e "\n${BLD}${RED} Configure SSH ${BLD}${GREEN}| Done!${RESET}\n"
 
 
+
 # Configure DNS
 /bin/cp -n /etc/hosts /etc/hosts.bak
 /bin/cp -f /etc/hosts.bak /etc/hosts
@@ -292,15 +133,18 @@ AEGIR_HOST=`uname -n`
 echo -e "\n${BLD}${RED} Configure DNS ${BLD}${GREEN}| Done!${RESET}\n"
 
 
+
 # Update mcrypt.ini
 update_mcrypt_ini > /etc/php5/cli/conf.d/mcrypt.ini
 echo -e "\n${BLD}${RED} Update mcrypt.ini ${BLD}${GREEN}| Done!${RESET}\n"
+
 
 
 # Create Aegir Account
 adduser --system --group --home /srv/aegir aegir
 adduser aegir www-data
 echo -e "\n${BLD}${RED} Create Aegir Account ${BLD}${GREEN}| Done!${RESET}\n"
+
 
 
 # Create Support Account
@@ -314,14 +158,15 @@ if [ $(id -u) -eq 0 ]; then
     pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
     useradd -m -p $pass -s /bin/bash support
     usermod -G www-data,aegir,sudo support
-    setup_gitconfig "support" "support@pearance.com" "Pearance" "Support"
-    chown support.support /home/support/.gitconfig
+    cd /home/support/
+    su -s /bin/bash support -c 'cd; curl -O https://raw.github.com/Bashtopia/Bashtopia/master/.aux/install.sh; chmod 770 install.sh; ./install.sh'
 
     [ $? -eq 0 ] && echo -e "\n${BLD}${RED} Create Support Account ${BLD}${GREEN}| Done!${RESET}\n" || echo -e "\nFailed to add support account!"
   fi
 else
   echo -e "\nOnly root may add a user to the system\n"
 fi
+
 
 
 # Create Additional Account
@@ -347,8 +192,8 @@ if test "$REPLY" = "y" -o "$REPLY" = "Y"; then
         pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
         useradd -m -p $pass -s /bin/bash $username
         usermod -G www-data,aegir,sudo $username
-        setup_gitconfig $username $email $firsname $lastname
-        chown $username.$username /home/$username/.gitconfig
+        su -s /bin/bash support -c 'cd; curl -O https://raw.github.com/Bashtopia/Bashtopia/master/.aux/install.sh; chmod 770 install.sh; ./install.sh'
+
         [ $? -eq 0 ] && echo -e "\n${BLD}${RED} Create Additional Account $username ${BLD}${GREEN}| Done!${RESET}\n" || echo -e "\nFailed to add another user!"
     fi
   else
@@ -359,10 +204,12 @@ else
 fi
 
 
+
 # Configure Apache
 a2enmod rewrite
 ln -s /srv/aegir/config/apache.conf /etc/apache2/conf.d/aegir.conf
 echo -e "\n${BLD}${RED} Configure Apache ${BLD}${GREEN}| Done!${RESET}\n"
+
 
 
 # Configure Sudo
@@ -372,12 +219,14 @@ update_sudoers >> /etc/sudoers
 echo -e "\n${BLD}${RED} Configure Sudo ${BLD}${GREEN}| Done!${RESET}\n"
 
 
+
 # Install Drush
 cd /srv/aegir
 su -s /bin/bash aegir -c 'git clone --branch master http://git.drupal.org/project/drush.git'
 cd drush
-su -s /bin/bash aegir -c 'git checkout 7.x-4.x'
+su -s /bin/bash aegir -c 'git checkout 7.x-4.5'
 echo -e "\n${BLD}${RED} Install Drush ${BLD}${GREEN}| Done!${RESET}\n"
+
 
 
 # Install Provision
@@ -387,10 +236,12 @@ su -s /bin/bash aegir -c '/srv/aegir/drush/drush dl --destination=/srv/aegir/.dr
 echo -e "\n${BLD}${RED} Install Provision ${BLD}${GREEN}| Done!${RESET}\n"
 
 
+
 # Configure Aegir Make
 /bin/cp -n /srv/aegir/.drush/provision/aegir.make /srv/aegir/.drush/provision/aegir.make.bak
 update_aegir_make > /srv/aegir/.drush/provision/aegir.make
 echo -e "\n${BLD}${RED} Configure Aegir Make ${BLD}${GREEN}| Done!${RESET}\n"
+
 
 
 # Install SaaS Hostmaster
