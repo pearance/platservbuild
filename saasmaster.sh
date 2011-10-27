@@ -171,8 +171,8 @@ fi
 
 # Create Additional Account
 echo -n -e "\nDo you want to add another user? [y/n] "
-read -N 1 REPLY
-if test "$REPLY" = "y" -o "$REPLY" = "Y"; then
+read -N 1 ADDUSER
+if test "$ADDUSER" = "y" -o "$REPLY" = "Y"; then
   if [ $(id -u) -eq 0 ]; then
     echo -e "\n"
     read -p "Enter username : " username
@@ -192,7 +192,7 @@ if test "$REPLY" = "y" -o "$REPLY" = "Y"; then
         pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
         useradd -m -p $pass -s /bin/bash $username
         usermod -G www-data,aegir,sudo $username
-        su -s /bin/bash support -c 'cd; curl -O https://raw.github.com/Bashtopia/Bashtopia/master/.aux/install.sh; chmod 770 install.sh; ./install.sh'
+        su -s /bin/bash $username -c 'cd; curl -O https://raw.github.com/Bashtopia/Bashtopia/master/.aux/install.sh; chmod 770 install.sh; ./install.sh'
 
         [ $? -eq 0 ] && echo -e "\n${BLD}${RED} Create Additional Account $username ${BLD}${GREEN}| Done!${RESET}\n" || echo -e "\nFailed to add another user!"
     fi
@@ -238,9 +238,18 @@ echo -e "\n${BLD}${RED} Install Provision ${BLD}${GREEN}| Done!${RESET}\n"
 
 
 # Configure Aegir Make
-/bin/cp -n /srv/aegir/.drush/provision/aegir.make /srv/aegir/.drush/provision/aegir.make.bak
-update_aegir_make > /srv/aegir/.drush/provision/aegir.make
-echo -e "\n${BLD}${RED} Configure Aegir Make ${BLD}${GREEN}| Done!${RESET}\n"
+echo -n -e "\nSelf-Service Version? [y/n] "
+read -N 1 SELFSERVICE
+if test "$SELFSERVICE" = "y" -o "$REPLY" = "Y"; then
+  # Self-Service Version
+  /bin/cp -n /srv/aegir/.drush/provision/aegir.make /srv/aegir/.drush/provision/aegir.make.bak
+  update_aegir_make > /srv/aegir/.drush/provision/aegir.make
+  echo -e "\n${BLD}${RED} Configure Aegir Make (Self-Service)${BLD}${GREEN}| Done!${RESET}\n"
+else
+  # Full-Service Version
+  echo -e "\n${BLD}${RED} Configure Aegir Make (Full-Service)${BLD}${GREEN}| Done!${RESET}\n"
+fi
+
 
 
 
@@ -248,11 +257,12 @@ echo -e "\n${BLD}${RED} Configure Aegir Make ${BLD}${GREEN}| Done!${RESET}\n"
 su -s /bin/bash aegir -c 'cd /srv/aegir && /srv/aegir/drush/drush hostmaster-install'
 echo -e "\n${BLD}${RED} Install SaaS Hostmaster ${BLD}${GREEN}| Done!${RESET}\n"
 
+if test "$SELFSERVICE" = "y" -o "$REPLY" = "Y"; then
   # Patch Modules
   # uc_better_cart_links - http://drupal.org/node/1090092#comment-4245384
-  # cd /srv/aegir/hostmaster-*/profiles/hostmaster/modules/contrib/uc_better_cart_links
-  # mkdir backups && cp uc_better_cart_links.module backups && cp uc_better_cart_links.pages.inc backups
-  # su -s /bin/bash aegir -c 'wget "http://drupal.org/files/issues/uc-better-links-fix.patch"'
-  # su -s /bin/bash aegir -c 'git apply -v uc-better-links-fix.patch'
-  # echo -e "\n${BLD}${RED} Patch uc_better_cart_links ${BLD}${GREEN}| Done!${RESET}\n"
-
+  cd /srv/aegir/hostmaster-*/profiles/hostmaster/modules/contrib/uc_better_cart_links
+  mkdir backups && cp uc_better_cart_links.module backups && cp uc_better_cart_links.pages.inc backups
+  su -s /bin/bash aegir -c 'wget "http://drupal.org/files/issues/uc-better-links-fix.patch"'
+  su -s /bin/bash aegir -c 'git apply -v uc-better-links-fix.patch'
+  echo -e "\n${BLD}${RED} Patch uc_better_cart_links ${BLD}${GREEN}| Done!${RESET}\n"
+fi
