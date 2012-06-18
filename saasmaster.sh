@@ -102,7 +102,7 @@ echo -e "\n${BLD}${RED} Update System ${BLD}${GREEN}| Done!${RESET}\n"
 
 
 # Install Packages
-aptitude install -y apache2 php5 php5-cli php5-gd php5-mysql mysql-server
+aptitude install -y apache2 php5 php5-cli php5-gd php5-mysql php5-curl mysql-server
 aptitude install -y phpmyadmin landscape-common postfix sudo rsync
 aptitude install -y bash-completion git-core git-completion update-notifier-common
 echo -e "\n${BLD}${RED} Install Packages ${BLD}${GREEN}| Done!${RESET}\n"
