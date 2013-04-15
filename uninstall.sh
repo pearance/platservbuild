@@ -14,7 +14,7 @@ rm /etc/apache2/conf.d/aegir.conf
 echo -e "\n Removing Database"
 mysql -e 'drop database $db;'
 
-rm -r saasmaster
+rm -r platservbuild.sh
 echo -e "\n*** Clone Repository ***"
-git clone git://github.com/Pearance/saasmaster.git
+git clone git://github.com/pearance/platservbuild.git
 
