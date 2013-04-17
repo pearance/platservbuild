@@ -105,6 +105,7 @@ echo -e "\n${BLD}${RED} Update System ${BLD}${GREEN}| Done!${RESET}\n"
 aptitude install -y apache2 php5 php5-cli php5-gd php5-mysql php5-curl mysql-server
 aptitude install -y phpmyadmin landscape-common postfix sudo rsync
 aptitude install -y bash-completion git-core git-completion update-notifier-common
+mysql_secure_installation
 echo -e "\n${BLD}${RED} Install Packages ${BLD}${GREEN}| Done!${RESET}\n"
 
 
@@ -232,7 +233,7 @@ echo -e "\n${BLD}${RED} Install Drush ${BLD}${GREEN}| Done!${RESET}\n"
 # Install Provision
 cd /srv/aegir
 su -s /bin/bash aegir -c 'mkdir .drush'
-su -s /bin/bash aegir -c '/srv/aegir/drush/drush dl --destination=/srv/aegir/.drush provision-6.x-1.4'
+su -s /bin/bash aegir -c '/srv/aegir/drush/drush dl --destination=/srv/aegir/.drush provision-6.x'
 echo -e "\n${BLD}${RED} Install Provision ${BLD}${GREEN}| Done!${RESET}\n"
 
 
@@ -253,9 +254,9 @@ fi
 
 
 
-# Install SaaS Hostmaster
+# Install Hostmaster
 su -s /bin/bash aegir -c 'cd /srv/aegir && /srv/aegir/drush/drush hostmaster-install'
-echo -e "\n${BLD}${RED} Install SaaS Hostmaster ${BLD}${GREEN}| Done!${RESET}\n"
+echo -e "\n${BLD}${RED} Install Hostmaster ${BLD}${GREEN}| Done!${RESET}\n"
 
 if test "$SELFSERVICE" = "y" -o "$REPLY" = "Y"; then
   # Patch Modules
