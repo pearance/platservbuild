@@ -75,10 +75,7 @@ echo -e "\n${BLD}${RED} Configure DNS ${BLD}${GREEN}| Done!${RESET}\n"
 adduser --group --home /srv/aegir aegir
 adduser aegir www-data
 passwd aegir
-su -s /bin/bash aegir -c 'cd'
-su -s /bin/bash aegir -c 'curl -O https://raw.github.com/Bashtopia/Bashtopia/master/.aux/install.sh && chmod 770 install.sh && ./install.sh'
-su -s /bin/bash aegir -c 'chmod 770 install.sh && ./install.sh'
-su -s /bin/bash aegir -c 'curl -O https://raw.github.com/vimez/vimez/master/.aux/install.sh && ./install.sh'
+su -s /bin/bash aegir -c 'cd && curl -O https://raw.github.com/Bashtopia/Bashtopia/master/.aux/install.sh && chmod 770 install.sh; ./install.sh'
 echo -e "\n${BLD}${RED} Create Aegir Account ${BLD}${GREEN}| Done!${RESET}\n"
 
 
