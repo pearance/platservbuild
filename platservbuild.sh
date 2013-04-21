@@ -1,6 +1,7 @@
+# vim:fdm=marker :vim
 #! /bin/bash
 
-# DEFINE VARIABLES
+# DEFINE VARIABLES# {{{
 ###################################################################
 
 BLD=$(tput bold)
@@ -14,7 +15,63 @@ WHITE=$(tput setaf 7)
 RESET=$(tput sgr0)
 
 
-# SCRIPT
+# }}}
+# DEFINE FUNCTIONS# {{{
+###################################################################
+
+function update_hosts {
+AEGIR_HOST=`uname -n`
+IP=`ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'`
+cat <<- _EOF_
+
+#######################
+# PEARANCE AMMENDMENT #
+#######################
+
+$IP         $AEGIR_HOST
+_EOF_
+}
+
+
+function update_sshd_config {
+cat <<- _EOF_
+
+#######################
+# PEARANCE AMMENDMENT #
+#######################
+
+ClientAliveInterval 120
+_EOF_
+}
+
+
+function update_sudoers {
+cat <<- _EOF_
+
+#######################
+# PEARANCE AMMENDMENT #
+#######################
+
+aegir ALL=NOPASSWD: /usr/sbin/apache2ctl
+_EOF_
+}
+
+
+
+function update_mcrypt_ini {
+cat <<- _EOF_
+;#######################
+;# PEARANCE AMMENDMENT #
+;#######################
+
+; configuration for php MCrypt module
+extension=mcrypt.so
+_EOF_
+}
+
+
+# }}}
+# SCRIPT# {{{
 ###################################################################
 
 # Get input
@@ -122,58 +179,4 @@ su -s /bin/bash aegir -c 'cd /srv/aegir && /srv/aegir/drush/drush hostmaster-ins
 echo -e "\n${BLD}${RED} Install Hostmaster ${BLD}${GREEN}| Done!${RESET}\n"
 
 
-
-# DEFINE FUNCTIONS
-###################################################################
-
-function update_hosts {
-AEGIR_HOST=`uname -n`
-IP=`ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'`
-cat <<- _EOF_
-
-#######################
-# PEARANCE AMMENDMENT #
-#######################
-
-$IP         $AEGIR_HOST
-_EOF_
-}
-
-
-function update_sshd_config {
-cat <<- _EOF_
-
-#######################
-# PEARANCE AMMENDMENT #
-#######################
-
-ClientAliveInterval 120
-_EOF_
-}
-
-
-function update_sudoers {
-cat <<- _EOF_
-
-#######################
-# PEARANCE AMMENDMENT #
-#######################
-
-aegir ALL=NOPASSWD: /usr/sbin/apache2ctl
-_EOF_
-}
-
-
-
-function update_mcrypt_ini {
-cat <<- _EOF_
-;#######################
-;# PEARANCE AMMENDMENT #
-;#######################
-
-; configuration for php MCrypt module
-extension=mcrypt.so
-_EOF_
-}
-
-
+#}}}
