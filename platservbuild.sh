@@ -1,4 +1,4 @@
-# vim:fdm=marker :vim
+# vim:fdm=marker:
 #! /bin/bash
 
 # DEFINE VARIABLES# {{{
@@ -58,18 +58,6 @@ _EOF_
 
 
 
-function update_mcrypt_ini {
-cat <<- _EOF_
-;#######################
-;# PEARANCE AMMENDMENT #
-;#######################
-
-; configuration for php MCrypt module
-extension=mcrypt.so
-_EOF_
-}
-
-
 # }}}
 # SCRIPT# {{{
 ###################################################################
@@ -122,14 +110,8 @@ echo -e "\n${BLD}${RED} Configure DNS ${BLD}${GREEN}| Done!${RESET}\n"
 
 
 
-# Update mcrypt.ini
-# update_mcrypt_ini > /etc/php5/cli/conf.d/mcrypt.ini
-# echo -e "\n${BLD}${RED} Update mcrypt.ini ${BLD}${GREEN}| Done!${RESET}\n"
-
-
-
 # Create Aegir Account
-adduser --group --home /srv/aegir aegir
+adduser --system --group --home /srv/aegir aegir
 adduser aegir www-data
 passwd aegir
 su -s /bin/bash aegir -c 'cd && curl -O https://raw.github.com/Bashtopia/Bashtopia/master/.aux/install.sh && chmod 770 install.sh; ./install.sh'
