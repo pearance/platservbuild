@@ -160,7 +160,7 @@ if [ $(id -u) -eq 0 ]; then
     useradd -m -p $pass -s /bin/bash support
     usermod -G www-data,aegir,sudo support
     cd /home/support/
-    su -s /bin/bash support -c 'cd; curl -O https://raw.github.com/Bashtopia/Bashtopia/master/.aux/install.sh; chmod 770 install.sh; ./install.sh'
+    su -s /bin/bash support -c 'cd && curl -L https://raw.github.com/Bashtopia/Bashtopia/master/.aux/install.sh | sh'
 
     [ $? -eq 0 ] && echo -e "\n${BLD}${RED} Create Support Account ${BLD}${GREEN}| Done!${RESET}\n" || echo -e "\nFailed to add support account!"
   fi

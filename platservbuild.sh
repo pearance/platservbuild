@@ -1,4 +1,3 @@
-# vim:fdm=marker:
 #! /bin/bash
 
 # DEFINE VARIABLES# {{{
@@ -113,9 +112,29 @@ echo -e "\n${BLD}${RED} Configure DNS ${BLD}${GREEN}| Done!${RESET}\n"
 # Create Aegir Account
 adduser --system --group --home /srv/aegir aegir
 adduser aegir www-data
-passwd aegir
-su -s /bin/bash aegir -c 'cd && curl -O https://raw.github.com/Bashtopia/Bashtopia/master/.aux/install.sh && chmod 770 install.sh; ./install.sh'
 echo -e "\n${BLD}${RED} Create Aegir Account ${BLD}${GREEN}| Done!${RESET}\n"
+
+
+
+# Create Support Account
+if [ $(id -u) -eq 0 ]; then
+  read -s -p "Enter password for support account: " password
+  echo -e "\n"
+  egrep "^support" /etc/passwd >/dev/null
+  if [ $? -eq 0 ]; then
+      echo -e "\nPearance support account already exists!"
+  else
+    pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
+    useradd -m -p $pass -s /bin/bash support
+    usermod -G www-data,aegir,sudo support
+    cd /home/support/
+    su -s /bin/bash support -c 'cd && curl -L https://raw.github.com/pearance/shelltopia/master/.aux/install.sh | sh'
+
+    [ $? -eq 0 ] && echo -e "\n${BLD}${RED} Create Support Account ${BLD}${GREEN}| Done!${RESET}\n" || echo -e "\nFailed to add support account!"
+  fi
+else
+  echo -e "\nOnly root may add a user to the system\n"
+fi
 
 
 
@@ -162,3 +181,4 @@ echo -e "\n${BLD}${RED} Install Hostmaster ${BLD}${GREEN}| Done!${RESET}\n"
 
 
 #}}}
+# vim:fdm=marker:
