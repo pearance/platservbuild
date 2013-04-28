@@ -76,9 +76,9 @@ echo -e "\n${BLD}${RED} Update System ${BLD}${GREEN}| Done!${RESET}\n"
 
 
 # Install Packages
-aptitude install -y apache2 php5 php5-cli php5-gd php5-mysql php5-curl mysql-server
-aptitude install -y phpmyadmin landscape-common postfix sudo rsync
-aptitude install -y bash-completion git-core git-completion update-notifier-common
+aptitude install -y apache2 php5 php5-cli php5-gd php5-mysql php5-curl
+aptitude install -y mysql-server phpmyadmin landscape-common postfix sudo rsync
+aptitude install -y git-core update-notifier-common zip
 mysql_secure_installation
 echo -e "\n${BLD}${RED} Install Packages ${BLD}${GREEN}| Done!${RESET}\n"
 
@@ -159,10 +159,10 @@ echo -e "\n${BLD}${RED} Configure Sudo ${BLD}${GREEN}| Done!${RESET}\n"
 
 
 # Install Drush
-cd /srv/aegir
-su -s /bin/bash aegir -c 'git clone --branch master http://git.drupal.org/project/drush.git'
-cd drush
-su -s /bin/bash aegir -c 'git checkout 7.x-4.5'
+su -s /bin/bash aegir -c "git clone --branch master http://git.drupal.org/project/drush.git /srv/aegir/drush/"
+su -s /bin/bash aegir -c "cd ~/drush/ && git checkout 7.x-4.5"
+su -s /bin/bash aegir -c "mkdir -p ~/bin/ && cd ~/bin/"
+su -s /bin/bash aegir -c "ln -s /srv/aegir/drush/drush drush"
 echo -e "\n${BLD}${RED} Install Drush ${BLD}${GREEN}| Done!${RESET}\n"
 
 
