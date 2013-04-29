@@ -169,10 +169,10 @@ su -s /bin/bash aegir -c "cd /srv/aegir/hostmaster*/sites/all/"
 su -s /bin/bash aegir -c "drush dl hosting_profile_roles"
 su -s /bin/bash aegir -c "drush dl hosting_backup_queue"
 su -s /bin/bash aegir -c "drush dl hosting_backup_gc"
-su -s /bin/bash aegir -c "drush -y en hosting_profile_roles -l lp-*.pearance.com"
-su -s /bin/bash aegir -c "drush -y en hosting_backup_queue -l lp-*.pearance.com"
-su -s /bin/bash aegir -c "drush -y en hosting_backup_gc -l lp-*.pearance.com"
-su -s /bin/bash aegir -c "drush -y en hosting_alias -l lp-*.pearance.com"
+su -s /bin/bash aegir -c "drush -y en hosting_profile_roles -l lp*.pearance.com"
+su -s /bin/bash aegir -c "drush -y en hosting_backup_queue -l lp*.pearance.com"
+su -s /bin/bash aegir -c "drush -y en hosting_backup_gc -l lp*.pearance.com"
+su -s /bin/bash aegir -c "drush -y en hosting_alias -l lp*.pearance.com"
 
 
 
