@@ -1,6 +1,6 @@
 #! /bin/bash
 
-# DEFINE VARIABLES# {{{
+# VARIABLES # {{{
 ###################################################################
 
 BLD=$(tput bold)
@@ -15,7 +15,7 @@ RESET=$(tput sgr0)
 
 
 # }}}
-# DEFINE FUNCTIONS# {{{
+# FUNCTIONS # {{{
 ###################################################################
 
 function update_hosts {
@@ -58,10 +58,10 @@ _EOF_
 
 
 # }}}
-# SCRIPT# {{{
+# AEGIR BUILD # {{{
 ###################################################################
 
-# Get input
+# Get Input
 clear
 echo
 read -p "Enter hostname: " newhostname
@@ -117,24 +117,24 @@ echo -e "\n${BLD}${RED} Create Aegir Account ${BLD}${GREEN}| Done!${RESET}\n"
 
 
 # Create Support Account
-if [ $(id -u) -eq 0 ]; then
-  read -s -p "Enter password for support account: " password
-  echo -e "\n"
-  egrep "^support" /etc/passwd >/dev/null
-  if [ $? -eq 0 ]; then
-      echo -e "\nPearance support account already exists!"
-  else
-    pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
-    useradd -m -p $pass -s /bin/bash support
-    usermod -G www-data,aegir,sudo support
-    cd /home/support/
-    su -s /bin/bash support -c 'cd && curl -L https://raw.github.com/pearance/shelltopia/master/.aux/install.sh | sh'
-
-    [ $? -eq 0 ] && echo -e "\n${BLD}${RED} Create Support Account ${BLD}${GREEN}| Done!${RESET}\n" || echo -e "\nFailed to add support account!"
-  fi
-else
-  echo -e "\nOnly root may add a user to the system\n"
-fi
+# if [ $(id -u) -eq 0 ]; then
+#   read -s -p "Enter password for support account: " password
+#   echo -e "\n"
+#   egrep "^support" /etc/passwd >/dev/null
+#   if [ $? -eq 0 ]; then
+#       echo -e "\nPearance support account already exists!"
+#   else
+#     pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
+#     useradd -m -p $pass -s /bin/bash support
+#     usermod -G www-data,aegir,sudo support
+#     cd /home/support/
+#     su -s /bin/bash support -c 'cd && curl -L https://raw.github.com/pearance/shelltopia/master/.aux/install.sh | sh'
+#
+#     [ $? -eq 0 ] && echo -e "\n${BLD}${RED} Create Support Account ${BLD}${GREEN}| Done!${RESET}\n" || echo -e "\nFailed to add support account!"
+#   fi
+# else
+#   echo -e "\nOnly root may add a user to the system\n"
+# fi
 
 
 
@@ -180,5 +180,60 @@ su -s /bin/bash aegir -c 'cd /srv/aegir && /srv/aegir/drush/drush hostmaster-ins
 echo -e "\n${BLD}${RED} Install Hostmaster ${BLD}${GREEN}| Done!${RESET}\n"
 
 
-#}}}
+
+
+
+# }}}
+# POST AEGIR BUILD # {{{
+###################################################################
+# Install Modules
+su -s /bin/bash aegir -c "cd /srv/aegir/hostmaster*/sites/all/"
+su -s /bin/bash aegir -c "drush dl hosting_profile_roles"
+su -s /bin/bash aegir -c "drush dl hosting_backup_queue"
+su -s /bin/bash aegir -c "drush dl hosting_backup_gc"
+su -s /bin/bash aegir -c "drush -y en hosting_profile_roles -l lp-*.pearance.com"
+su -s /bin/bash aegir -c "drush -y en hosting_backup_queue -l lp-*.pearance.com"
+su -s /bin/bash aegir -c "drush -y en hosting_backup_gc -l lp-*.pearance.com"
+su -s /bin/bash aegir -c "drush -y en hosting_alias -l lp-*.pearance.com"
+
+
+
+# Clone Install Profile
+su -s /bin/bash aegir -c "mkdir -p /srv/aegir/platforms/.profiles/"
+su -s /bin/bash aegir -c "git clone https://github.com/pearance/pro_101_install_profile.git pro_101"
+
+
+
+# Establish Links to Scripts
+su -s /bin/bash aegir -c "mkdir -p ~/backups/pre-platservbuild"
+
+	# build script
+ln -s ~/platforms/.profiles/pro_101/scripts/pro_101_build.sh /usr/bin/pro101build
+
+	# global.inc
+su -s /bin/bash aegir -c "mv ~/config/includes/global.inc ~/backups/pre-platservbuild/global.inc.bak"
+su -s /bin/bash aegir -c "ln -s ~/platforms/.profiles/pro_101/scripts/global.inc ~/config/includes/global.inc"
+
+	# install.provision.inc
+su -s /bin/bash aegir -c "mv ~/.drush/provision/platform/install.provision.inc ~/backups/pre-platservbuild/install.provision.inc.bak"
+su -s /bin/bash aegir -c "ln -s ~/platforms/.profiles/pro_101/scripts/install.provision.inc ~/.drush/provision/platform/install.provision.inc"
+
+
+
+# Set Folder Permissions
+su -s /bin/bash aegir -c "find ~/clients/ -type -d -exec chmod 775 {} \;"
+su -s /bin/bash aegir -c "find ~/config/ -type -d -exec chmod 775 {} \;"
+su -s /bin/bash aegir -c "find ~/drush/ -type -d -exec chmod 775 {} \;"
+su -s /bin/bash aegir -c "find ~/platforms/ -type -d -exec chmod 775 {} \;"
+
+
+# Set File Permissions
+su -s /bin/bash aegir -c "find ~/clients/ -type -f -exec chmod 664 {} \;"
+su -s /bin/bash aegir -c "find ~/config/ -type -f -exec chmod 664 {} \;"
+su -s /bin/bash aegir -c "find ~/drush/ -type -f -exec chmod 664 {} \;"
+su -s /bin/bash aegir -c "find ~/platforms/ -type -f -exec chmod 664 {} \;"
+
+
+
+# }}}
 # vim:fdm=marker:
