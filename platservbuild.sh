@@ -124,7 +124,7 @@ echo -e "\n${BLD}${RED} Configure Apache ${BLD}${GREEN}| Done!${RESET}\n"
 
 
 # Configure PHP
-echo upload_max_filesize = 5M >> /etc/php5/apache2/php.ini
+# echo upload_max_filesize = 5M >> /etc/php5/apache2/php.ini
 
 
 
