@@ -76,9 +76,10 @@ echo -e "\n${BLD}${RED} Update System ${BLD}${GREEN}| Done!${RESET}\n"
 
 
 # Install Packages
-aptitude install -y apache2 php5 php5-cli php5-gd php5-mysql php5-curl
-aptitude install -y mysql-server phpmyadmin landscape-common postfix sudo rsync
-aptitude install -y git-core update-notifier-common zip zsh
+aptitude install -y apache2 php5 php5-cli php5-gd php5-mysql php5-curl \
+mysql-server phpmyadmin landscape-common postfix sudo rsync git-core \
+update-notifier-common zip zsh drush
+
 mysql_secure_installation
 echo -e "\n${BLD}${RED} Install Packages ${BLD}${GREEN}| Done!${RESET}\n"
 
@@ -124,7 +125,7 @@ echo -e "\n${BLD}${RED} Configure Apache ${BLD}${GREEN}| Done!${RESET}\n"
 
 
 # Configure PHP
-# echo upload_max_filesize = 5M >> /etc/php5/apache2/php.ini
+echo upload_max_filesize = 5M >> /etc/php5/apache2/php.ini
 
 
 
@@ -133,15 +134,6 @@ echo -e "\n${BLD}${RED} Configure Apache ${BLD}${GREEN}| Done!${RESET}\n"
 /bin/cp -f /etc/sudoers.bak /etc/sudoers
 update_sudoers >> /etc/sudoers
 echo -e "\n${BLD}${RED} Configure Sudo ${BLD}${GREEN}| Done!${RESET}\n"
-
-
-
-# Install Drush
-su -s /bin/bash aegir -c "git clone --branch master http://git.drupal.org/project/drush.git /srv/aegir/drush/"
-su -s /bin/bash aegir -c "cd ~/drush/ && git checkout 7.x-4.5"
-su -s /bin/bash aegir -c "mkdir -p ~/bin/ && cd ~/bin/"
-su -s /bin/bash aegir -c "ln -s /srv/aegir/drush/drush drush"
-echo -e "\n${BLD}${RED} Install Drush ${BLD}${GREEN}| Done!${RESET}\n"
 
 
 
@@ -185,7 +177,7 @@ su -s /bin/bash aegir -c "git clone https://github.com/pearance/pro_101_install_
 # Establish Links to Scripts
 su -s /bin/bash aegir -c "mkdir -p ~/backups/pre-platservbuild"
 	# build script
-ln -s ~/platforms/.profiles/pro_101/scripts/pro_101_build.sh /usr/bin/pro101build
+ln -s ~/platforms/.profiles/pro_101/scripts/pro_101_build.sh /usr/local/bin/pro101build
 	# global.inc
 su -s /bin/bash aegir -c "mv ~/config/includes/global.inc ~/backups/pre-platservbuild/global.inc.bak"
 su -s /bin/bash aegir -c "ln -s ~/platforms/.profiles/pro_101/scripts/global.inc ~/config/includes/global.inc"
