@@ -140,13 +140,13 @@ echo -e "\n${BLD}${RED} Configure Sudo ${BLD}${GREEN}| Done!${RESET}\n"
 # Install Provision
 cd /srv/aegir
 su -s /bin/bash aegir -c 'mkdir .drush'
-su -s /bin/bash aegir -c '/srv/aegir/drush/drush dl --destination=/srv/aegir/.drush provision-6.x'
+su -s /bin/bash aegir -c 'drush dl --destination=/srv/aegir/.drush provision-6.x'
 echo -e "\n${BLD}${RED} Install Provision ${BLD}${GREEN}| Done!${RESET}\n"
 
 
 
 # Install Hostmaster
-su -s /bin/bash aegir -c 'cd /srv/aegir && /srv/aegir/drush/drush hostmaster-install'
+su -s /bin/bash aegir -c 'cd /srv/aegir && drush hostmaster-install'
 echo -e "\n${BLD}${RED} Install Hostmaster ${BLD}${GREEN}| Done!${RESET}\n"
 
 
@@ -157,14 +157,13 @@ echo -e "\n${BLD}${RED} Install Hostmaster ${BLD}${GREEN}| Done!${RESET}\n"
 # POST AEGIR BUILD # {{{
 ###################################################################
 # Install Modules
-su -s /bin/bash aegir -c "cd /srv/aegir/hostmaster*/sites/all/"
-su -s /bin/bash aegir -c "drush dl hosting_profile_roles"
-su -s /bin/bash aegir -c "drush dl hosting_backup_queue"
-su -s /bin/bash aegir -c "drush dl hosting_backup_gc"
-su -s /bin/bash aegir -c "drush -y en hosting_profile_roles -l lp*.pearance.com"
-su -s /bin/bash aegir -c "drush -y en hosting_backup_queue -l lp*.pearance.com"
-su -s /bin/bash aegir -c "drush -y en hosting_backup_gc -l lp*.pearance.com"
-su -s /bin/bash aegir -c "drush -y en hosting_alias -l lp*.pearance.com"
+su -s /bin/bash aegir -c "cd ~/hostmaster*/sites/all/ && drush dl hosting_profile_roles"
+su -s /bin/bash aegir -c "cd ~/hostmaster*/sites/all/ && drush dl hosting_backup_queue"
+su -s /bin/bash aegir -c "cd ~/hostmaster*/sites/all/ && drush dl hosting_backup_gc"
+su -s /bin/bash aegir -c "cd ~/hostmaster*/sites/all/ && drush -y en hosting_profile_roles -l lp*.pearance.com"
+su -s /bin/bash aegir -c "cd ~/hostmaster*/sites/all/ && drush -y en hosting_backup_queue -l lp*.pearance.com"
+su -s /bin/bash aegir -c "cd ~/hostmaster*/sites/all/ && drush -y en hosting_backup_gc -l lp*.pearance.com"
+su -s /bin/bash aegir -c "cd ~/hostmaster*/sites/all/ && drush -y en hosting_alias -l lp*.pearance.com"
 
 
 
@@ -188,18 +187,16 @@ su -s /bin/bash aegir -c "ln -s ~/platforms/.profiles/pro_101/scripts/install.pr
 
 
 # Set Folder Permissions
-su -s /bin/bash aegir -c "find ~/clients/ -type -d -exec chmod 775 {} \;"
-su -s /bin/bash aegir -c "find ~/config/ -type -d -exec chmod 775 {} \;"
-su -s /bin/bash aegir -c "find ~/drush/ -type -d -exec chmod 775 {} \;"
-su -s /bin/bash aegir -c "find ~/platforms/ -type -d -exec chmod 775 {} \;"
+find /srv/aegir/clients -type d -exec chmod 0775 {} \;
+find /srv/aegir/config -type d -exec chmod 0775 {} \;
+find /srv/aegir/platforms -type d -exec chmod 0775 {} \;
 
 
 
 # Set File Permissions
-su -s /bin/bash aegir -c "find ~/clients/ -type -f -exec chmod 664 {} \;"
-su -s /bin/bash aegir -c "find ~/config/ -type -f -exec chmod 664 {} \;"
-su -s /bin/bash aegir -c "find ~/drush/ -type -f -exec chmod 664 {} \;"
-su -s /bin/bash aegir -c "find ~/platforms/ -type -f -exec chmod 664 {} \;"
+find /srv/aegir/clients -type f -exec chmod 0664 {} \;
+find /srv/aegir/config -type f -exec chmod 0664 {} \;
+find /srv/aegir/platforms -type f -exec chmod 0664 {} \;
 
 
 
