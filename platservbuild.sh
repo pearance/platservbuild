@@ -210,11 +210,7 @@ if test "$ADDUSER" = "y" -o "$REPLY" = "Y"; then
     echo
     read -s -p "Enter password : " password
     echo -e "\n"
-    read -p "Enter firstname : " firstname
-    echo
-    read -p "Enter lastname : " lastname
-    echo
-    read -p "Enter email address : " email
+
     egrep "^$username" /etc/passwd >/dev/null
 
     if [ $? -eq 0 ]; then
