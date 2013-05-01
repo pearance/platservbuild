@@ -168,8 +168,7 @@ su -s /bin/bash aegir -c "cd ~/hostmaster*/sites/all/ && drush -y en hosting_ali
 
 
 # Clone Install Profile
-su -s /bin/bash aegir -c "mkdir -p /srv/aegir/platforms/.profiles/"
-su -s /bin/bash aegir -c "git clone https://github.com/pearance/pro_101_install_profile.git pro_101"
+su -s /bin/bash aegir -c "git clone https://github.com/pearance/pro_101_install_profile.git ~/platforms/.profiles/pro_101"
 
 
 
@@ -190,6 +189,7 @@ su -s /bin/bash aegir -c "ln -s ~/platforms/.profiles/pro_101/scripts/install.pr
 find /srv/aegir/clients -type d -exec chmod 0775 {} \;
 find /srv/aegir/config -type d -exec chmod 0775 {} \;
 find /srv/aegir/platforms -type d -exec chmod 0775 {} \;
+find /srv/aegir/backups -type d -exec chmod 0775 {} \;
 
 
 
@@ -223,7 +223,6 @@ if test "$ADDUSER" = "y" -o "$REPLY" = "Y"; then
         pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
         useradd -m -p $pass -s /bin/zsh $username
         usermod -G www-data,aegir,sudo $username
-        su -s /bin/bash $username -c 'cd && curl -O https://raw.github.com/shelltopia/shelltopia/master/.aux/install.sh && chmod 770 install.sh && ./install.sh'
 
         [ $? -eq 0 ] && echo -e "\n${BLD}${RED} Create Additional Account $username ${BLD}${GREEN}| Done!${RESET}\n" || echo -e "\nFailed to add another user!"
     fi
@@ -235,6 +234,7 @@ else
 fi
 echo -e "\n${BLD}${RED} Post Aegir Build ${BLD}${GREEN}| Done!${RESET}\n"
 
+su -s /bin/bash $username -c 'cd && curl -O https://raw.github.com/shelltopia/shelltopia/master/.aux/install.sh && chmod 770 install.sh && ./install.sh'
 
 
 # }}}
