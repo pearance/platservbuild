@@ -15,9 +15,7 @@ curl -O https://raw.github.com/pearance/platservbuild/master/platservbuild.sh &&
 3. Configure hosting settings.
 4. Configure the primary menu.
 5. Create support account.
-6. Configure APC (Consider including in the build script).
 
 
 ## TODO
-1. Remove cron settings on pro 101.
 

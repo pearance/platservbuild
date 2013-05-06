@@ -119,7 +119,7 @@ echo -e "\n${BLD}${RED} Create Aegir Account ${BLD}${GREEN}| Done!${RESET}\n"
 
 # Configure Apache
 a2enmod rewrite
-ln -s /srv/aegir/config/apache.conf /etc/apache2/conf.d/aegir.conf
+ln -sf /srv/aegir/config/apache.conf /etc/apache2/conf.d/aegir.conf
 echo -e "\n${BLD}${RED} Configure Apache ${BLD}${GREEN}| Done!${RESET}\n"
 
 
@@ -173,13 +173,13 @@ su -s /bin/bash aegir -c "git clone https://github.com/pearance/pro_101_install_
 # Establish Links to Scripts
 su -s /bin/bash aegir -c "mkdir -p ~/backups/pre-platservbuild"
 	# build script
-ln -s ~/platforms/.profiles/pro_101/scripts/pro_101_build.sh /usr/local/bin/pro101build
+ln -sf /srv/aegir/platforms/.profiles/pro_101/scripts/pro_101_build.sh /usr/local/bin/pro101build
 	# global.inc
 su -s /bin/bash aegir -c "mv ~/config/includes/global.inc ~/backups/pre-platservbuild/global.inc.bak"
-su -s /bin/bash aegir -c "ln -s ~/platforms/.profiles/pro_101/scripts/global.inc ~/config/includes/global.inc"
+su -s /bin/bash aegir -c "ln -sf ~/platforms/.profiles/pro_101/scripts/global.inc ~/config/includes/global.inc"
 	# install.provision.inc
 su -s /bin/bash aegir -c "mv ~/.drush/provision/platform/install.provision.inc ~/backups/pre-platservbuild/install.provision.inc.bak"
-su -s /bin/bash aegir -c "ln -s ~/platforms/.profiles/pro_101/scripts/install.provision.inc ~/.drush/provision/platform/install.provision.inc"
+su -s /bin/bash aegir -c "ln -sf ~/platforms/.profiles/pro_101/scripts/install.provision.inc ~/.drush/provision/platform/install.provision.inc"
 
 
 
