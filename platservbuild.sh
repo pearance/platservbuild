@@ -250,6 +250,7 @@ fi
 echo -e "\n${BLD}${RED} Post Aegir Build ${BLD}${GREEN}| Done!${RESET}\n"
 
 su -s /bin/bash $username -c 'cd && curl -O https://raw.github.com/zshtopia/zshtopia/master/.aux/install.sh && chmod 770 install.sh && ./install.sh'
+su -s /bin/bash $username -c 'cd && curl -O https://raw.github.com/vimez/vimez/master/.aux/install.sh && chmod 770 install.sh && ./install.sh'
 
 
 # }}}
