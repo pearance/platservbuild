@@ -162,18 +162,27 @@ echo -e "\n${BLD}${RED} Install Hostmaster ${BLD}${GREEN}| Done!${RESET}\n"
 # POST AEGIR BUILD # {{{
 ###################################################################
 # Install Modules
+su -s /bin/bash aegir -c "cd ~/hostmaster*/sites/all/ && drush dl features"
+su -s /bin/bash aegir -c "cd ~/hostmaster*/sites/all/ && drush dl ctools"
+su -s /bin/bash aegir -c "cd ~/hostmaster*/sites/all/ && drush dl strongarm"
+su -s /bin/bash aegir -c "cd ~/hostmaster*/sites/all/ && drush dl diff"
 su -s /bin/bash aegir -c "cd ~/hostmaster*/sites/all/ && drush dl hosting_profile_roles"
 su -s /bin/bash aegir -c "cd ~/hostmaster*/sites/all/ && drush dl hosting_backup_queue"
 su -s /bin/bash aegir -c "cd ~/hostmaster*/sites/all/ && drush dl hosting_backup_gc"
+su -s /bin/bash aegir -c "cd ~/hostmaster*/sites/all/ && drush -y en features -l $newhostname"
+su -s /bin/bash aegir -c "cd ~/hostmaster*/sites/all/ && drush -y en ctools -l $newhostname"
+su -s /bin/bash aegir -c "cd ~/hostmaster*/sites/all/ && drush -y en strongarm -l $newhostname"
+su -s /bin/bash aegir -c "cd ~/hostmaster*/sites/all/ && drush -y en diff -l $newhostname"
 su -s /bin/bash aegir -c "cd ~/hostmaster*/sites/all/ && drush -y en hosting_profile_roles -l $newhostname"
 su -s /bin/bash aegir -c "cd ~/hostmaster*/sites/all/ && drush -y en hosting_backup_queue -l $newhostname"
 su -s /bin/bash aegir -c "cd ~/hostmaster*/sites/all/ && drush -y en hosting_backup_gc -l $newhostname"
 su -s /bin/bash aegir -c "cd ~/hostmaster*/sites/all/ && drush -y en hosting_alias -l $newhostname"
 
-
+su -s /bin/bash aegir -c "cd ~/hostmaster*/sites/all/modules && git clone git@github.com:pearance/platform_server_configuration.git"
+su -s /bin/bash aegir -c "cd ~/hostmaster*/sites/all/ && drush -y en platform_server_configuration -l $newhostname"
 
 # Clone Install Profile
-su -s /bin/bash aegir -c "git clone https://github.com/pearance/pro_101_install_profile.git ~/platforms/.profiles/pro_101"
+su -s /bin/bash aegir -c "git clone git@github.com:pearance/pro_101_install_profile.git ~/platforms/.profiles/pro_101"
 
 
 
