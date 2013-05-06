@@ -19,4 +19,4 @@ curl -O https://raw.github.com/pearance/platservbuild/master/platservbuild.sh &&
 
 ## TODO
 
-# vim:fdm=syntax:
+<!--- vim:fdm=syntax: -->
