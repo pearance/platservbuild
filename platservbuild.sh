@@ -169,6 +169,7 @@ su -s /bin/bash aegir -c "cd ~/hostmaster*/sites/all/ && drush dl diff"
 su -s /bin/bash aegir -c "cd ~/hostmaster*/sites/all/ && drush dl hosting_profile_roles"
 su -s /bin/bash aegir -c "cd ~/hostmaster*/sites/all/ && drush dl hosting_backup_queue"
 su -s /bin/bash aegir -c "cd ~/hostmaster*/sites/all/ && drush dl hosting_backup_gc"
+su -s /bin/bash aegir -c "cd ~/hostmaster*/sites/all/ && drush dl email_registration"
 su -s /bin/bash aegir -c "cd ~/hostmaster*/sites/all/ && drush -y en features -l $newhostname"
 su -s /bin/bash aegir -c "cd ~/hostmaster*/sites/all/ && drush -y en ctools -l $newhostname"
 su -s /bin/bash aegir -c "cd ~/hostmaster*/sites/all/ && drush -y en strongarm -l $newhostname"
@@ -177,6 +178,7 @@ su -s /bin/bash aegir -c "cd ~/hostmaster*/sites/all/ && drush -y en hosting_pro
 su -s /bin/bash aegir -c "cd ~/hostmaster*/sites/all/ && drush -y en hosting_backup_queue -l $newhostname"
 su -s /bin/bash aegir -c "cd ~/hostmaster*/sites/all/ && drush -y en hosting_backup_gc -l $newhostname"
 su -s /bin/bash aegir -c "cd ~/hostmaster*/sites/all/ && drush -y en hosting_alias -l $newhostname"
+su -s /bin/bash aegir -c "cd ~/hostmaster*/sites/all/ && drush -y en email_registration -l $newhostname"
 
 su -s /bin/bash aegir -c "cd ~/hostmaster*/sites/all/modules && git clone git://github.com/pearance/platform_server_configuration.git"
 su -s /bin/bash aegir -c "cd ~/hostmaster*/sites/all/ && drush -y en platform_server_configuration -l $newhostname"
@@ -250,7 +252,6 @@ fi
 echo -e "\n${BLD}${RED} Post Aegir Build ${BLD}${GREEN}| Done!${RESET}\n"
 
 su -s /bin/bash $username -c 'cd && curl -O https://raw.github.com/zshtopia/zshtopia/master/.aux/install.sh && chmod 770 install.sh && ./install.sh'
-su -s /bin/bash $username -c 'cd && curl -O https://raw.github.com/vimez/vimez/master/.aux/install.sh && chmod 770 install.sh && ./install.sh'
 
 
 # }}}
