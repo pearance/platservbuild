@@ -10,11 +10,8 @@ curl -O https://raw.github.com/pearance/platservbuild/master/platservbuild.sh &&
 
 ## POST INSTALL MANUAL PROCEDURES
 
-1. Configure admin client (development).
-2. Rename user roles and set permissions.
-3. Configure hosting settings.
-4. Configure the primary menu.
-5. Create support account.
+1. Configure development accounti.
+2. Create support account.
 
 
 ## TODO
