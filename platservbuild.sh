@@ -120,6 +120,7 @@ echo -e "\n${BLD}${RED} Configure DNS ${BLD}${GREEN}| Done!${RESET}\n"
 # Create Aegir Account
 adduser --system --group --home /srv/aegir aegir
 adduser aegir www-data
+chmod 775 /srv/aegir
 echo -e "\n${BLD}${RED} Create Aegir Account ${BLD}${GREEN}| Done!${RESET}\n"
 
 
@@ -183,10 +184,14 @@ su -s /bin/bash aegir -c "cd ~/hostmaster*/sites/all/ && drush -y en email_regis
 su -s /bin/bash aegir -c "cd ~/hostmaster*/sites/all/modules && git clone https://github.com/pearance/platform_server_configuration.git"
 su -s /bin/bash aegir -c "cd ~/hostmaster*/sites/all/ && drush -y en platform_server_configuration -l $newhostname"
 
-# Clone Install Profile
+
+
+# Clone Install Profile & Drush Make
 su -s /bin/bash aegir -c "git clone https://github.com/pearance/pro_101_install_profile.git ~/platforms/.profiles/pro_101"
-
-
+cd /usr/share/drush/commands/
+git clone --branch master http://git.drupal.org/project/drush_make.git
+git checkout 6.x-2.3
+cd /srv/aegir/
 
 # Establish Links to Scripts
 su -s /bin/bash aegir -c "mkdir -p ~/backups/pre-platservbuild"
@@ -251,7 +256,7 @@ else
 fi
 echo -e "\n${BLD}${RED} Post Aegir Build ${BLD}${GREEN}| Done!${RESET}\n"
 
-su -s /bin/bash $username -c 'cd && curl -O https://raw.github.com/zshtopia/zshtopia/master/.aux/install.sh && chmod 770 install.sh && ./install.sh'
+su -s /bin/bash $username -c 'cd ~ && curl -O https://raw.github.com/zshtopia/zshtopia/master/.aux/install.sh && chmod 770 install.sh && ./install.sh'
 
 
 # }}}
