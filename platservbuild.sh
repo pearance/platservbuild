@@ -85,7 +85,7 @@ echo -e "\n${BLD}${RED} Update System ${BLD}${GREEN}| Done!${RESET}\n"
 # Install Packages
 aptitude install -y apache2 php5 php5-cli php5-gd php5-mysql php5-curl \
 mysql-server phpmyadmin landscape-common postfix sudo rsync git-core \
-update-notifier-common zip zsh drush php-apc safe-rm
+update-notifier-common zip zsh drush php-apc safe-rm trash-cli
 
 mysql_secure_installation
 echo -e "\n${BLD}${RED} Install Packages ${BLD}${GREEN}| Done!${RESET}\n"
@@ -211,6 +211,8 @@ find /srv/aegir/clients -type d -exec chmod 0775 {} \;
 find /srv/aegir/config -type d -exec chmod 0775 {} \;
 find /srv/aegir/platforms -type d -exec chmod 0775 {} \;
 find /srv/aegir/backups -type d -exec chmod 0775 {} \;
+find /srv/aegir/hostmaster-*/sites/ -type d -exec chmod 0775 {} \;
+find /srv/aegir/hostmaster-*/sites/$newhostname/files -type d -exec chmod 0777 {} \;
 
 
 
@@ -218,6 +220,8 @@ find /srv/aegir/backups -type d -exec chmod 0775 {} \;
 find /srv/aegir/clients -type f -exec chmod 0664 {} \;
 find /srv/aegir/config -type f -exec chmod 0664 {} \;
 find /srv/aegir/platforms -type f -exec chmod 0664 {} \;
+find /srv/aegir/hostmaster-*/sites/$newhostname/ -type f -exec chmod 0664 {} \;
+find /srv/aegir/hostmaster-*/sites/$newhostname/drushrc.php settings.php -type f -exec chmod 0440 {} \;
 
 
 
