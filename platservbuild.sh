@@ -222,6 +222,9 @@ find /srv/aegir/config -type f -exec chmod 0664 {} \;
 find /srv/aegir/platforms -type f -exec chmod 0664 {} \;
 find /srv/aegir/hostmaster-*/sites/$newhostname/ -type f -exec chmod 0664 {} \;
 find /srv/aegir/hostmaster-*/sites/$newhostname/drushrc.php settings.php -type f -exec chmod 0440 {} \;
+chmod 774 /srv/aegir/platforms/.profiles/*/scripts/*.sh
+chmod 774 /srv/aegir/platforms/.profiles/*/scripts/*.php
+
 
 
 
