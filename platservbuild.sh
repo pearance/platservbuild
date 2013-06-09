@@ -191,10 +191,12 @@ su -s /bin/bash aegir -c "git clone https://github.com/pearance/pro_101_install_
 cd /usr/share/drush/commands/
 
 wget http://ftp.drupal.org/files/projects/drush_make-6.x-2.3.tar.gz
-tar -xf drush_make-6.x-2.3.tar.gz && rm !$
+tar -xf drush_make-6.x-2.3.tar.gz
+rm drush_make-6.x-2.3.tar.gz
 
 wget http://ftp.drupal.org/files/projects/provision_boost-7.x-1.1.tar.gz
-tar -xf provision_boost-7.x-1.1.tar.gz && rm !$
+tar -xf provision_boost-7.x-1.1.tar.gz
+rm provision_boost-7.x-1.1.tar.gz
 
 cd /srv/aegir/
 
