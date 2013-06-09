@@ -186,11 +186,16 @@ su -s /bin/bash aegir -c "cd ~/hostmaster*/sites/all/ && drush -y en platform_se
 
 
 
-# Clone Install Profile & Drush Make
+# Clone Install Profile & Drush Commands
 su -s /bin/bash aegir -c "git clone https://github.com/pearance/pro_101_install_profile.git ~/platforms/.profiles/pro_101"
 cd /usr/share/drush/commands/
-git clone --branch master http://git.drupal.org/project/drush_make.git
-git checkout 6.x-2.3
+
+wget http://ftp.drupal.org/files/projects/drush_make-6.x-2.3.tar.gz
+tar -xf drush_make-6.x-2.3.tar.gz && rm !$
+
+wget http://ftp.drupal.org/files/projects/provision_boost-7.x-1.1.tar.gz
+tar -xf provision_boost-7.x-1.1.tar.gz && rm !$
+
 cd /srv/aegir/
 
 # Establish Links to Scripts
