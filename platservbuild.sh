@@ -86,7 +86,10 @@ echo -e "\n${BLD}${RED} Update System ${BLD}${GREEN}| Done!${RESET}\n"
 aptitude install -y apache2 php5 php5-cli php5-gd php5-mysql php5-curl \
 mysql-server phpmyadmin landscape-common postfix sudo rsync git-core \
 update-notifier-common zip zsh drush php-apc safe-rm trash-cli \
-ruby1.9.1 ruby-compass
+ruby-full rubygems1.8
+
+gem install sass
+gem install compass
 
 mysql_secure_installation
 echo -e "\n${BLD}${RED} Install Packages ${BLD}${GREEN}| Done!${RESET}\n"
